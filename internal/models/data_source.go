@@ -1,23 +1,23 @@
 package models
 
 type DataSource struct {
-	// Base fields
 	BaseModel
-	// Fields
-	Type                    string               `json:"type"`
-	Description             string               `json:"description"`
-	XMitreModifiedByRef     string               `json:"x_mitre_modified_by_ref"`
-	XMitreAttackSpecVersion string               `json:"x_mitre_attack_spec_version"`
-	XMitreCollectionLayers  []string             `json:"x_mitre_collection_layers"`
-	XMitreDomains           []string             `json:"x_mitre_domains"`
-	CreatedByRef            string               `json:"created_by_ref"`
-	ExternalReferences      []ExternalReferences `json:"external_references"`
-	ObjectMarkingRefs       []string             `json:"object_marking_refs"`
-	Aliases                 []string             `json:"aliases"`
-	Revoked                 bool                 `json:"revoked"`
-	XMitreDeprecated        bool                 `json:"x_mitre_deprecated"`
-	XMitreContributors      []string             `json:"x_mitre_contributors"`
-	XMitrePlatforms         []string             `json:"x_mitre_platforms"`
+	// These are properties from the MITRE ATT&CK json
+	Description            string   `json:"description"`
+	XMitrePlatforms        []string `json:"x_mitre_platforms"`
+	XMitreDeprecated       bool     `json:"x_mitre_deprecated,omitempty"`
+	XMitreContributors     []string `json:"x_mitre_contributors,omitempty"`
+	XMitreCollectionLayers []string `json:"x_mitre_collection_layers"`
+	CreatedByRef           string   `json:"created_by_ref"`
+	Revoked                bool     `json:"revoked,omitempty"`
+	ExternalReferences     []struct {
+		SourceName string `json:"source_name"`
+		URL        string `json:"url"`
+		ExternalID string `json:"external_id"`
+	} `json:"external_references"`
+	ObjectMarkingRefs       []string `json:"object_marking_refs"`
+	XMitreAttackSpecVersion string   `json:"x_mitre_attack_spec_version"`
+	XMitreModifiedByRef     string   `json:"x_mitre_modified_by_ref"`
 }
 
 func (d *DataSource) DataComponents() ([]DataComponent, error) {

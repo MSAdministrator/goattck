@@ -7,6 +7,7 @@ type BaseModel struct {
 	Modified      string   `json:"modified"`
 	XMitreVersion string   `json:"x_mitre_version"`
 	XMitreDomains []string `json:"x_mitre_domains"`
+	Type          string   `json:"type"`
 }
 
 type ExternalReferences struct {
