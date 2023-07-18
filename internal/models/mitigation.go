@@ -1,23 +1,50 @@
 package models
 
-type Mitigation struct {
+import (
+	"fmt"
+)
+
+type Mitigation interface {
+	Techniques() ([]Technique, error)
+}
+
+type MitigationObject struct {
 	BaseModel
+	BaseAttributes
 	// These are properties from the MITRE ATT&CK json
-	ObjectMarkingRefs  []string `json:"object_marking_refs"`
-	CreatedByRef       string   `json:"created_by_ref"`
-	ExternalReferences []struct {
-		SourceName  string `json:"source_name"`
-		URL         string `json:"url"`
-		ExternalID  string `json:"external_id,omitempty"`
-		Description string `json:"description,omitempty"`
-	} `json:"external_references"`
-	Description             string `json:"description"`
-	XMitreDeprecated        bool   `json:"x_mitre_deprecated,omitempty"`
+	ExternalReferences []ExternalReference `json:"external_references"`
 	XMitreModifiedByRef     string `json:"x_mitre_modified_by_ref"`
-	Revoked                 bool   `json:"revoked,omitempty"`
 	XMitreAttackSpecVersion string `json:"x_mitre_attack_spec_version,omitempty"`
 }
 
-func (m *Mitigation) Techniques() ([]Technique, error) {
+func NewMitigation(object map[string]interface{}) (MitigationObject, error) {
+	mitigation := MitigationObject{}
+	baseModel, err := parseBaseModel(object)
+	if err != nil {
+		slogger.Error(fmt.Sprintf("Error parsing base model: %s", err))
+	}
+	mitigation.BaseModel = baseModel
+	baseAttributes, err := parseBaseAttributes(object)
+	if err != nil {
+		slogger.Error(fmt.Sprintf("Error parsing base attributes: %s", err))
+	}
+	mitigation.BaseAttributes = baseAttributes
+	if object["external_references"] != nil {
+		refs, err := parseExternalReferences(object)
+		if err != nil {
+			slogger.Error(fmt.Sprintf("Error parsing external references: %s", err))
+		}
+		mitigation.ExternalReferences = refs
+	}
+	if object["x_mitre_modified_by_ref"] != nil {
+		mitigation.XMitreModifiedByRef = object["x_mitre_modified_by_ref"].(string)
+	}
+	if object["x_mitre_attack_spec_version"] != nil {
+		mitigation.XMitreAttackSpecVersion = object["x_mitre_attack_spec_version"].(string)
+	}
+	return mitigation, nil
+}
+
+func (m *MitigationObject) Techniques() ([]Technique, error) {
 	return nil, nil
 }
