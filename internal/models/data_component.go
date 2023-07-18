@@ -1,19 +1,50 @@
 package models
 
-type DataComponent struct {
-	BaseModel
-	// These are properties from the MITRE ATT&CK json
-	Description             string   `json:"description"`
-	XMitreDataSourceRef     string   `json:"x_mitre_data_source_ref"`
-	XMitreDeprecated        bool     `json:"x_mitre_deprecated,omitempty"`
-	Type                    string   `json:"type"`
-	CreatedByRef            string   `json:"created_by_ref"`
-	Revoked                 bool     `json:"revoked,omitempty"`
-	ObjectMarkingRefs       []string `json:"object_marking_refs"`
-	XMitreAttackSpecVersion string   `json:"x_mitre_attack_spec_version"`
-	XMitreModifiedByRef     string   `json:"x_mitre_modified_by_ref"`
+import (
+	"fmt"
+)
+
+type DataComponent interface {
+	Techniques() ([]Technique, error)
 }
 
-func (d *DataComponent) Techniques() ([]Technique, error) {
+type DataComponentObject struct {
+	BaseModel
+	BaseAttributes
+	// These are properties from the MITRE ATT&CK json
+	XMitreDataSourceRef     string `json:"x_mitre_data_source_ref"`
+	Type                    string `json:"type"`
+	XMitreAttackSpecVersion string `json:"x_mitre_attack_spec_version"`
+	XMitreModifiedByRef     string `json:"x_mitre_modified_by_ref"`
+}
+
+func NewDataComponent(object map[string]interface{}) (DataComponentObject, error) {
+	dataComponent := DataComponentObject{}
+	baseModel, err := parseBaseModel(object)
+	if err != nil {
+		slogger.Error(fmt.Sprintf("Error parsing base model: %s", err))
+	}
+	dataComponent.BaseModel = baseModel
+	baseAttributes, err := parseBaseAttributes(object)
+	if err != nil {
+		slogger.Error(fmt.Sprintf("Error parsing base attributes: %s", err))
+	}
+	dataComponent.BaseAttributes = baseAttributes
+	if object["x_mitre_data_source_ref"] != nil {
+		dataComponent.XMitreDataSourceRef = object["x_mitre_data_source_ref"].(string)
+	}
+	if object["type"] != nil {
+		dataComponent.Type = object["type"].(string)
+	}
+	if object["x_mitre_attack_spec_version"] != nil {
+		dataComponent.XMitreAttackSpecVersion = object["x_mitre_attack_spec_version"].(string)
+	}
+	if object["x_mitre_modified_by_ref"] != nil {
+		dataComponent.XMitreModifiedByRef = object["x_mitre_modified_by_ref"].(string)
+	}
+	return dataComponent, nil
+}
+
+func (d *DataComponentObject) Techniques() ([]Technique, error) {
 	return nil, nil
 }
