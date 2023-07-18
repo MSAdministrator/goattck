@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"reflect"
 )
 
 type Actor interface {
