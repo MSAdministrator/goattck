@@ -1,24 +1,24 @@
 package logger
 
 import (
+	"io"
 	"log"
 	"os"
 	"time"
-	"io"
 )
 
 const (
-	Info string = "info"
-	Debug string = "debug"
+	Info    string = "info"
+	Debug   string = "debug"
 	Warning string = "warning"
-	Error string = "error"
-	Fatal string = "fatal"
+	Error   string = "error"
+	Fatal   string = "fatal"
 )
 
 type Logger struct {
 	writeToFile bool
-	level string
-	logger *log.Logger
+	level       string
+	logger      *log.Logger
 }
 
 func NewLogger(level string, writeToFile bool) *Logger {
