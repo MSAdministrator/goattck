@@ -1,83 +1,84 @@
 package logger
 
 import (
-	"io"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
+type LogLevel int
+
 const (
-	Info    string = "info"
-	Debug   string = "debug"
-	Warning string = "warning"
-	Error   string = "error"
-	Fatal   string = "fatal"
+	Info LogLevel = iota
+	Debug
+	Warning
+	Error
+	Fatal
 )
 
+var levelNames = map[LogLevel]string{
+	Info:    "INFO",
+	Debug:   "DEBUG",
+	Warning: "WARN",
+	Error:   "ERROR",
+	Fatal:   "FATAL",
+}
+
+// ParseLogLevel converts a string to a LogLevel.
+func ParseLogLevel(level string) LogLevel {
+	level = strings.ToLower(strings.TrimSpace(level))
+	switch level {
+	case "info":
+		return Info
+	case "debug":
+		return Debug
+	case "warn", "warning":
+		return Warning
+	case "error":
+		return Error
+	case "fatal":
+		return Fatal
+	default:
+		return Info // Default to Info if the input is invalid.
+	}
+}
+
+// Logger struct with configurable output destination.
 type Logger struct {
-	writeToFile bool
-	level       string
-	logger      *log.Logger
+	level  LogLevel
+	logger *log.Logger
 }
 
-func NewLogger(level string, writeToFile bool) *Logger {
+// NewLogger initializes a logger
+func NewLogger(level LogLevel) *Logger {
 	flags := log.LstdFlags | log.Lshortfile
-	logger := &Logger{level: level, writeToFile: writeToFile}
-	logger.logger = log.New(os.Stdout, "", flags)
-	if writeToFile {
-		logger.setWriteToFile()
-	}
-	return logger
+	logger := log.New(os.Stdout, "", flags)
+
+	return &Logger{level: level, logger: logger}
 }
 
-func (l *Logger) getTimestamp() string {
-	return time.Now().Format("2006-01-02T15:04:05-0700")
+// formatMessage creates a log message with a timestamp and level.
+func (l *Logger) formatMessage(level LogLevel, message string, a ...any) string {
+	timestamp := time.Now().Format("2006-01-02T15:04:05-0700")
+	prefix := fmt.Sprintf("[%s] %s: ", levelNames[level], timestamp)
+	return prefix + fmt.Sprintf(message, a...)
 }
 
-func (l *Logger) Info(message string) {
-	if l.level == Info {
-		l.logger.SetPrefix("INFO : " + l.getTimestamp())
-		l.logger.Println(message)
-	}
-}
-
-func (l *Logger) Debug(message string) {
-	if l.level == Debug {
-		l.logger.SetPrefix("DEBUG : " + l.getTimestamp())
-		l.logger.Println(message)
+// logMessage writes a formatted message to the log.
+func (l *Logger) logMessage(level LogLevel, message string, a ...any) {
+	if level >= l.level {
+		l.logger.Output(3, l.formatMessage(level, message, a...))
 	}
 }
 
-func (l *Logger) Warning(message string) {
-	if l.level == Warning {
-		l.logger.SetPrefix("WARN : " + l.getTimestamp())
-		l.logger.Println(message)
-	}
-}
-
-func (l *Logger) Error(message string) {
-	if l.level == Error {
-		l.logger.SetPrefix("ERROR : " + l.getTimestamp())
-		l.logger.Println(message)
-	}
-}
-
-func (l *Logger) Fatal(message string) {
-	if l.level == Fatal {
-		l.logger.SetPrefix("FATAL : " + l.getTimestamp())
-		l.logger.Fatal(message)
-	}
-}
-
-func (l *Logger) setWriteToFile() {
-	// If the file doesn't exist, create it or append to the file
-	file, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		l.Error("Unable to open log file")
-	}
-	defer file.Close()
-
-	mw := io.MultiWriter(os.Stdout, file)
-	l.logger.SetOutput(mw)
+// Logging methods.
+func (l *Logger) Info(message string, a ...any)    { l.logMessage(Info, message, a...) }
+func (l *Logger) Debug(message string, a ...any)   { l.logMessage(Debug, message, a...) }
+func (l *Logger) Warning(message string, a ...any) { l.logMessage(Warning, message, a...) }
+func (l *Logger) Error(message string, a ...any)   { l.logMessage(Error, message, a...) }
+func (l *Logger) Fatal(message string, a ...any) {
+	l.logMessage(Fatal, message, a...)
+	os.Exit(1)
 }
