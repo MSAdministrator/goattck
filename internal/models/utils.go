@@ -1,11 +1,13 @@
 package models
 
 import (
-	"os"
+	"errors"
 	"fmt"
 	"reflect"
+)
 
-	"github.com/jedib0t/go-pretty/v6/table"
+var (
+	errorLoadingJSON = errors.New("error loading JSON from disk.")
 )
 
 func ConvertInterfaceArrayToStringArray(aInterface []interface{}) []string {
@@ -14,18 +16,6 @@ func ConvertInterfaceArrayToStringArray(aInterface []interface{}) []string {
 		aString[i] = v.(string)
 	}
 	return aString
-}
-
-func InteractivePrompt() {
-	// https://github.com/c-bata/go-prompt
-}
-
-func DisplayOutput(headers []string, row []string) {
-	t := table.NewWriter()
-    t.SetOutputMirror(os.Stdout)
-    t.AppendHeader(table.Row{headers})
-    t.AppendRow(table.Row{row})
-    t.Render()
 }
 
 func ObjectAssign(target interface{}, object interface{}) {
@@ -42,4 +32,17 @@ func ObjectAssign(target interface{}, object interface{}) {
 			}
 		}
 	}
+}
+
+func IsStructEmpty(object interface{}) (bool, error) {
+	if reflect.ValueOf(object).Kind() == reflect.Struct {
+		// and create an empty copy of the struct object to compare against
+		empty := reflect.New(reflect.TypeOf(object)).Elem().Interface()
+		if reflect.DeepEqual(object, empty) {
+			return true, nil
+		} else {
+			return false, nil
+		}
+	}
+	return false, nil
 }

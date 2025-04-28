@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+type entityStringValue string
+type entityStringArrayValue []string
+
 type BaseModel struct {
 	Id            string   `json:"id"`
 	Name          string   `json:"name"`
@@ -23,10 +26,10 @@ type BaseAttributes struct {
 }
 
 type BaseExternalModel struct {
-	Aliases                 []string             `json:"aliases"`
-	ExternalReferences      []ExternalReference  `json:"external_references"`
-	XMitreAttackSpecVersion string               `json:"x_mitre_attack_spec_version"`
-	XMitreModifiedByRef     string               `json:"x_mitre_modified_by_ref"`
+	Aliases                 []string            `json:"aliases"`
+	ExternalReferences      []ExternalReference `json:"external_references"`
+	XMitreAttackSpecVersion string              `json:"x_mitre_attack_spec_version"`
+	XMitreModifiedByRef     string              `json:"x_mitre_modified_by_ref"`
 }
 
 type ExternalReference struct {

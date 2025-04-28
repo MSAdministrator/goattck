@@ -1,55 +1,28 @@
 package models
 
-import "fmt"
+import "encoding/json"
 
-type Control interface {
-	Techniques() ([]Technique, error)
+type control interface {
 }
 
-type ControlObject struct {
+type Control struct {
 	// Base fields
 	BaseModel
 	// Fields
-	Revoked            bool                 `json:"revoked"`
-	XMitreFamily       string               `json:"x_mitre_family"`
-	XMitreImpact       []string             `json:"x_mitre_impact"`
-	XMitrePriority     string               `json:"x_mitre_priority"`
-	ObjectMarkingRefs  []string             `json:"object_marking_refs"`
+	Revoked            bool                `json:"revoked"`
+	XMitreFamily       string              `json:"x_mitre_family"`
+	XMitreImpact       []string            `json:"x_mitre_impact"`
+	XMitrePriority     string              `json:"x_mitre_priority"`
+	ObjectMarkingRefs  []string            `json:"object_marking_refs"`
 	ExternalReferences []ExternalReference `json:"external_references"`
+	Techniques         []Technique
 }
 
-func NewControl(object map[string]interface{}) (ControlObject, error) {
-	control := ControlObject{}
-	baseModel, err := parseBaseModel(object)
-	if err != nil {
-		slogger.Error(fmt.Sprintf("Error parsing base model: %s", err))
-	}
-	control.BaseModel = baseModel
-	if object["revoked"] != nil {
-		control.Revoked = object["revoked"].(bool)
-	}
-	if object["x_mitre_family"] != nil {
-		control.XMitreFamily = object["x_mitre_family"].(string)
-	}
-	if object["x_mitre_impact"] != nil {
-		control.XMitreImpact = object["x_mitre_impact"].([]string)
-	}
-	if object["x_mitre_priority"] != nil {
-		control.XMitrePriority = object["x_mitre_priority"].(string)
-	}
-	if object["object_marking_refs"] != nil {
-		control.ObjectMarkingRefs = object["object_marking_refs"].([]string)
-	}
-	if object["external_references"] != nil {
-		refs, err := parseExternalReferences(object)
-		if err != nil {
-			slogger.Error(fmt.Sprintf("Error parsing external references: %s", err))
-		}
-		control.ExternalReferences = refs
-	}
+var _ (control) = new(Control)
+
+func NewControl(object map[string]interface{}) (Control, error) {
+	control := Control{}
+	jsonString, _ := json.Marshal(object)
+	json.Unmarshal(jsonString, &control)
 	return control, nil
-}
-
-func (c *ControlObject) Techniques() ([]Technique, error) {
-	return nil, nil
 }

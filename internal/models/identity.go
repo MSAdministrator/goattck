@@ -4,18 +4,19 @@ import (
 	"fmt"
 )
 
-type Identity interface {
-}
+type identity interface{}
 
-type IdentityObject struct {
+type Identity struct {
 	BaseModel
 	// These are properties from the MITRE ATT&CK json
 	ObjectMarkingRefs []string `json:"object_marking_refs"`
 	IdentityClass     string   `json:"identity_class"`
 }
 
-func NewIdentity(object map[string]interface{}) (IdentityObject, error) {
-	identity := IdentityObject{}
+var _ (identity) = new(Identity)
+
+func NewIdentity(object map[string]interface{}) (Identity, error) {
+	identity := Identity{}
 	baseModel, err := parseBaseModel(object)
 	if err != nil {
 		slogger.Error(fmt.Sprintf("Error parsing base model: %s", err))
