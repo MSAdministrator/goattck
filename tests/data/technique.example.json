@@ -1,0 +1,3252 @@
+{
+    "id": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
+    "name": "Scheduled Task",
+    "created": "2019-11-27T14:58:00.429Z",
+    "modified": "2023-04-07T17:11:17.807Z",
+    "type": "attack-pattern",
+    "x_mitre_data_sources": [
+        "File: File Modification",
+        "Scheduled Job: Scheduled Job Creation",
+        "Windows Registry: Windows Registry Key Creation",
+        "Command: Command Execution",
+        "Process: Process Creation"
+    ],
+    "x_mitre_contributors": [
+        "Andrew Northern, @ex_raritas",
+        "Bryan Campbell, @bry_campbell",
+        "Zachary Abzug, @ZackDoesML",
+        "Selena Larson, @selenalarson",
+        "Sittikorn Sangrattanapitak"
+    ],
+    "x_mitre_impact_type": [],
+    "x_mitre_deprecated": false,
+    "x_mitre_effective_permissions": [],
+    "x_mitre_remote_support": true,
+    "x_mitre_permissions_required": [
+        "Administrator"
+    ],
+    "x_mitre_is_subtechnique": true,
+    "x_mitre_detection": "Monitor process execution from the <code>svchost.exe</code> in Windows 10 and the Windows Task Scheduler <code>taskeng.exe</code> for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete. Monitor Windows Task Scheduler stores in %systemroot%\\System32\\Tasks for change entries related to scheduled tasks that do not correlate with known software, patch cycles, etc.\n\nConfigure event logging for scheduled task creation and changes by enabling the \"Microsoft-Windows-TaskScheduler/Operational\" setting within the event logging service. (Citation: TechNet Forum Scheduled Task Operational Setting) Several events will then be logged on scheduled task activity, including: (Citation: TechNet Scheduled Task Events)(Citation: Microsoft Scheduled Task Events Win10)\n\n* Event ID 106 on Windows 7, Server 2008 R2 - Scheduled task registered\n* Event ID 140 on Windows 7, Server 2008 R2 / 4702 on Windows 10, Server 2016 - Scheduled task updated\n* Event ID 141 on Windows 7, Server 2008 R2 / 4699 on Windows 10, Server 2016 - Scheduled task deleted\n* Event ID 4698 on Windows 10, Server 2016 - Scheduled task created\n* Event ID 4700 on Windows 10, Server 2016 - Scheduled task enabled\n* Event ID 4701 on Windows 10, Server 2016 - Scheduled task disabled\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current scheduled tasks. (Citation: TechNet Autoruns)\n\nRemote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. Tasks may also be created through Windows system management tools such as Windows Management Instrumentation and PowerShell, so additional logging may need to be configured to gather the appropriate data.",
+    "x_mitre_defense_bypassed": [],
+    "x_mitre_system_requirements": [],
+    "x_mitre_attack_spec_version": "3.1.0",
+    "revoked": false,
+    "object_marking_refs": [
+        "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+    ],
+    "external_references": [
+        {
+            "source_name": "mitre-attack",
+            "url": "https://attack.mitre.org/techniques/T1053/005",
+            "external_id": "T1053.005",
+            "description": ""
+        },
+        {
+            "source_name": "SigmaHQ",
+            "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/registry/registry_delete/registry_delete_removal_sd_value_scheduled_task_hide.yml",
+            "external_id": "",
+            "description": "BlackB0lt. (2022, April 15). https://github.com/SigmaHQ/sigma/blob/master/rules/windows/registry/registry_delete/registry_delete_removal_sd_value_scheduled_task_hide.yml. Retrieved June 1, 2022."
+        },
+        {
+            "source_name": "ProofPoint Serpent",
+            "url": "https://www.proofpoint.com/us/blog/threat-insight/serpent-no-swiping-new-backdoor-targets-french-entities-unique-attack-chain",
+            "external_id": "",
+            "description": "Campbell, B. et al. (2022, March 21). Serpent, No Swiping! New Backdoor Targets French Entities with Unique Attack Chain. Retrieved April 11, 2022."
+        },
+        {
+            "source_name": "Defending Against Scheduled Task Attacks in Windows Environments",
+            "url": "https://blog.qualys.com/vulnerabilities-threat-research/2022/06/20/defending-against-scheduled-task-attacks-in-windows-environments",
+            "external_id": "",
+            "description": "Harshal Tupsamudre. (2022, June 20). Defending Against Scheduled Tasks. Retrieved July 5, 2022."
+        },
+        {
+            "source_name": "Twitter Leoloobeek Scheduled Task",
+            "url": "https://twitter.com/leoloobeek/status/939248813465853953",
+            "external_id": "",
+            "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved December 12, 2017."
+        },
+        {
+            "source_name": "Tarrask scheduled task",
+            "url": "https://www.microsoft.com/security/blog/2022/04/12/tarrask-malware-uses-scheduled-tasks-for-defense-evasion/",
+            "external_id": "",
+            "description": "Microsoft Threat Intelligence Team & Detection and Response Team . (2022, April 12). Tarrask malware uses scheduled tasks for defense evasion. Retrieved June 1, 2022."
+        },
+        {
+            "source_name": "Microsoft Scheduled Task Events Win10",
+            "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-other-object-access-events",
+            "external_id": "",
+            "description": "Microsoft. (2017, May 28). Audit Other Object Access Events. Retrieved June 27, 2019."
+        },
+        {
+            "source_name": "TechNet Scheduled Task Events",
+            "url": "https://technet.microsoft.com/library/dd315590.aspx",
+            "external_id": "",
+            "description": "Microsoft. (n.d.). General Task Registration. Retrieved December 12, 2017."
+        },
+        {
+            "source_name": "TechNet Autoruns",
+            "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
+            "external_id": "",
+            "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016."
+        },
+        {
+            "source_name": "TechNet Forum Scheduled Task Operational Setting",
+            "url": "https://social.technet.microsoft.com/Forums/en-US/e5bca729-52e7-4fcb-ba12-3225c564674c/scheduled-tasks-history-retention-settings?forum=winserver8gen",
+            "external_id": "",
+            "description": "Satyajit321. (2015, November 3). Scheduled Tasks History Retention settings. Retrieved December 12, 2017."
+        }
+    ],
+    "x_mitre_detectable_by_common_defenses": "",
+    "x_mitre_detectable_by_common_defenses_explanation": "",
+    "x_mitre_difficulty_for_adversary": "",
+    "x_mitre_difficulty_for_adversary_explanation": "",
+    "x_mitre_old_attack_id": "",
+    "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+    "x_mitre_platforms": [
+        "Windows"
+    ],
+    "x_mitre_domains": [
+        "enterprise-attack"
+    ],
+    "x_mitre_tactic_type": [],
+    "x_mitre_version": "1.3",
+    "description": "Adversaries may abuse the Windows Task Scheduler to perform task scheduling for initial or recurring execution of malicious code. There are multiple ways to access the Task Scheduler in Windows. The [schtasks](https://attack.mitre.org/software/S0111) utility can be run directly on the command line, or the Task Scheduler can be opened through the GUI within the Administrator Tools section of the Control Panel. In some cases, adversaries have used a .NET wrapper for the Windows Task Scheduler, and alternatively, adversaries have used the Windows netapi32 library to create a scheduled task.\n\nThe deprecated [at](https://attack.mitre.org/software/S0110) utility could also be abused by adversaries (ex: [At](https://attack.mitre.org/techniques/T1053/002)), though <code>at.exe</code> can not access tasks created with <code>schtasks</code> or the Control Panel.\n\nAn adversary may use Windows Task Scheduler to execute programs at system startup or on a scheduled basis for persistence. The Windows Task Scheduler can also be abused to conduct remote Execution as part of Lateral Movement and/or to run a process under the context of a specified account (such as SYSTEM). Similar to [System Binary Proxy Execution](https://attack.mitre.org/techniques/T1218), adversaries have also abused the Windows Task Scheduler to potentially mask one-time execution under signed/trusted system processes.(Citation: ProofPoint Serpent)\n\nAdversaries may also create \"hidden\" scheduled tasks (i.e. [Hide Artifacts](https://attack.mitre.org/techniques/T1564)) that may not be visible to defender tools and manual queries used to enumerate tasks. Specifically, an adversary may hide a task from `schtasks /query` and the Task Scheduler by deleting the associated Security Descriptor (SD) registry value (where deletion of this value must be completed using SYSTEM permissions).(Citation: SigmaHQ)(Citation: Tarrask scheduled task) Adversaries may also employ alternate methods to hide tasks, such as altering the metadata (e.g., `Index` value) within associated registry keys.(Citation: Defending Against Scheduled Task Attacks in Windows Environments) ",
+    "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+    "kill_chain_phases": [
+        {
+            "kill_chain_name": "mitre-attack",
+            "phase_name": "execution"
+        },
+        {
+            "kill_chain_name": "mitre-attack",
+            "phase_name": "persistence"
+        },
+        {
+            "kill_chain_name": "mitre-attack",
+            "phase_name": "privilege-escalation"
+        }
+    ],
+    "command_list": [
+        "schtasks /create /tn \"T1053_005_OnLogon\" /sc onlogon /tr \"cmd.exe /c calc.exe\"\nschtasks /create /tn \"T1053_005_OnStartup\" /sc onstart /ru system /tr \"cmd.exe /c calc.exe\"\n",
+        "SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\n",
+        "SCHTASKS /Create /S localhost /RU DOMAIN\\user /RP At0micStrong /TN \"Atomic task\" /TR \"C:\\windows\\system32\\cmd.exe\" /SC daily /ST 20:10\n",
+        "$Action = New-ScheduledTaskAction -Execute \"calc.exe\"\n$Trigger = New-ScheduledTaskTrigger -AtLogon\n$User = New-ScheduledTaskPrincipal -GroupId \"BUILTIN\\Administrators\" -RunLevel Highest\n$Set = New-ScheduledTaskSettingsSet\n$object = New-ScheduledTask -Action $Action -Principal $User -Trigger $Trigger -Settings $Set\nRegister-ScheduledTask AtomicTask -InputObject $object\n",
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12\nIEX (iwr \"https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1\" -UseBasicParsing) \nInvoke-MalDoc -macroFile \"\\T1053.005\\src\\T1053.005-macrocode.txt\" -officeProduct \"Word\" -sub \"Scheduler\"\n",
+        "$xml = [System.IO.File]::ReadAllText(\"\\T1053.005\\src\\T1053_005_WMI.xml\")\nInvoke-CimMethod -ClassName PS_ScheduledTask -NameSpace \"Root\\Microsoft\\Windows\\TaskScheduler\" -MethodName \"RegisterByXml\" -Arguments @{ Force = $true; Xml =$xml; }\n",
+        "reg add HKCU\\SOFTWARE\\ATOMIC-T1053.005 /v test /t REG_SZ /d cGluZyAxMjcuMC4wLjE= /f\nschtasks.exe /Create /F /TN \"ATOMIC-T1053.005\" /TR \"cmd /c start /min \\\"\\\" powershell.exe -Command IEX([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String((Get-ItemProperty -Path HKCU:\\\\SOFTWARE\\\\ATOMIC-T1053.005).test)))\" /sc daily /st 07:45\n",
+        "$xml = [System.IO.File]::ReadAllText(\"\\T1053.005\\src\\T1053_05_SCTASK_HIDDEN_ATTRIB.xml\")\nInvoke-CimMethod -ClassName PS_ScheduledTask -NameSpace \"Root\\Microsoft\\Windows\\TaskScheduler\" -MethodName \"RegisterByXml\" -Arguments @{ Force = $true; Xml =$xml; }\n",
+        "$Action = New-ScheduledTaskAction -Execute \"cmd.exe\"\n$Trigger = New-ScheduledTaskTrigger -AtLogon\n$User = New-ScheduledTaskPrincipal -GroupId \"BUILTIN\\Administrators\" -RunLevel Highest\n$Set = New-ScheduledTaskSettingsSet\n$object = New-ScheduledTask -Action $Action -Principal $User -Trigger $Trigger -Settings $Set\nRegister-ScheduledTask AtomicTaskModifed -InputObject $object\n$NewAction = New-ScheduledTaskAction -Execute \"Notepad.exe\"\nSet-ScheduledTask \"AtomicTaskModifed\" -Action $NewAction\n"
+    ],
+    "commands": [],
+    "queries": [],
+    "parsed_datasets": [
+        {
+            "source": "atomics/T1053.005/T1053.005.yaml",
+            "name": "Atomic Red Team Test - Scheduled Task/Job: Scheduled Task",
+            "content": {
+                "attack_technique": "T1053.005",
+                "display_name": "Scheduled Task/Job: Scheduled Task",
+                "atomic_tests": [
+                    {
+                        "name": "Scheduled Task Startup Script",
+                        "auto_generated_guid": "fec27f65-db86-4c2d-b66c-61945aee87c2",
+                        "description": "Run an exe on user logon or system startup.  Upon execution, success messages will be displayed for the two scheduled tasks. To view\nthe tasks, open the Task Scheduler and look in the Active Tasks pane.\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "executor": {
+                            "command": "schtasks /create /tn \"T1053_005_OnLogon\" /sc onlogon /tr \"cmd.exe /c calc.exe\"\nschtasks /create /tn \"T1053_005_OnStartup\" /sc onstart /ru system /tr \"cmd.exe /c calc.exe\"\n",
+                            "cleanup_command": "schtasks /delete /tn \"T1053_005_OnLogon\" /f >nul 2>&1\nschtasks /delete /tn \"T1053_005_OnStartup\" /f >nul 2>&1\n",
+                            "name": "command_prompt",
+                            "elevation_required": true
+                        }
+                    },
+                    {
+                        "name": "Scheduled task Local",
+                        "auto_generated_guid": "42f53695-ad4a-4546-abb6-7d837f644a71",
+                        "description": "Upon successful execution, cmd.exe will create a scheduled task to spawn cmd.exe at 20:10.\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "input_arguments": {
+                            "task_command": {
+                                "description": "What you want to execute",
+                                "type": "string",
+                                "default": "C:\\windows\\system32\\cmd.exe"
+                            },
+                            "time": {
+                                "description": "What time 24 Hour",
+                                "type": "string",
+                                "default": "20:10"
+                            }
+                        },
+                        "executor": {
+                            "name": "command_prompt",
+                            "elevation_required": false,
+                            "command": "SCHTASKS /Create /SC ONCE /TN spawn /TR #{task_command} /ST #{time}\n",
+                            "cleanup_command": "SCHTASKS /Delete /TN spawn /F >nul 2>&1\n"
+                        }
+                    },
+                    {
+                        "name": "Scheduled task Remote",
+                        "auto_generated_guid": "2e5eac3e-327b-4a88-a0c0-c4057039a8dd",
+                        "description": "Create a task on a remote system.\nUpon successful execution, cmd.exe will create a scheduled task to spawn cmd.exe at 20:10 on a remote endpoint.\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "input_arguments": {
+                            "task_command": {
+                                "description": "What you want to execute",
+                                "type": "string",
+                                "default": "C:\\windows\\system32\\cmd.exe"
+                            },
+                            "time": {
+                                "description": "What time 24 Hour",
+                                "type": "string",
+                                "default": "20:10"
+                            },
+                            "target": {
+                                "description": "Target",
+                                "type": "string",
+                                "default": "localhost"
+                            },
+                            "user_name": {
+                                "description": "Username to authenticate with, format: DOMAIN\\User",
+                                "type": "string",
+                                "default": "DOMAIN\\user"
+                            },
+                            "password": {
+                                "description": "Password to authenticate with",
+                                "type": "string",
+                                "default": "At0micStrong"
+                            }
+                        },
+                        "executor": {
+                            "name": "command_prompt",
+                            "elevation_required": true,
+                            "command": "SCHTASKS /Create /S #{target} /RU #{user_name} /RP #{password} /TN \"Atomic task\" /TR \"#{task_command}\" /SC daily /ST #{time}\n",
+                            "cleanup_command": "SCHTASKS /Delete /S #{target} /U #{user_name} /P #{password} /TN \"Atomic task\" /F >nul 2>&1\n"
+                        }
+                    },
+                    {
+                        "name": "Powershell Cmdlet Scheduled Task",
+                        "auto_generated_guid": "af9fd58f-c4ac-4bf2-a9ba-224b71ff25fd",
+                        "description": "Create an atomic scheduled task that leverages native powershell cmdlets.\n\nUpon successful execution, powershell.exe will create a scheduled task to spawn cmd.exe at 20:10.\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "executor": {
+                            "name": "powershell",
+                            "elevation_required": false,
+                            "command": "$Action = New-ScheduledTaskAction -Execute \"calc.exe\"\n$Trigger = New-ScheduledTaskTrigger -AtLogon\n$User = New-ScheduledTaskPrincipal -GroupId \"BUILTIN\\Administrators\" -RunLevel Highest\n$Set = New-ScheduledTaskSettingsSet\n$object = New-ScheduledTask -Action $Action -Principal $User -Trigger $Trigger -Settings $Set\nRegister-ScheduledTask AtomicTask -InputObject $object\n",
+                            "cleanup_command": "Unregister-ScheduledTask -TaskName \"AtomicTask\" -confirm:$false >$null 2>&1\n"
+                        }
+                    },
+                    {
+                        "name": "Task Scheduler via VBA",
+                        "auto_generated_guid": "ecd3fa21-7792-41a2-8726-2c5c673414d3",
+                        "description": "This module utilizes the Windows API to schedule a task for code execution (notepad.exe). The task scheduler will execute \"notepad.exe\" within\n30 - 40 seconds after this module has run\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "input_arguments": {
+                            "ms_product": {
+                                "description": "Maldoc application Word",
+                                "type": "string",
+                                "default": "Word"
+                            }
+                        },
+                        "dependency_executor_name": "powershell",
+                        "dependencies": [
+                            {
+                                "description": "Microsoft #{ms_product} must be installed\n",
+                                "prereq_command": "try {\n  New-Object -COMObject \"#{ms_product}.Application\" | Out-Null\n  $process = \"#{ms_product}\"; if ( $process -eq \"Word\") {$process = \"winword\"}\n  Stop-Process -Name $process\n  exit 0\n} catch { exit 1 }\n",
+                                "get_prereq_command": "Write-Host \"You will need to install Microsoft #{ms_product} manually to meet this requirement\"\n"
+                            }
+                        ],
+                        "executor": {
+                            "command": "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12\nIEX (iwr \"https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1\" -UseBasicParsing) \nInvoke-MalDoc -macroFile \"PathToAtomicsFolder\\T1053.005\\src\\T1053.005-macrocode.txt\" -officeProduct \"#{ms_product}\" -sub \"Scheduler\"\n",
+                            "name": "powershell",
+                            "cleanup_command": "Unregister-ScheduledTask -TaskName \"Run Notepad\" -Confirm:$false\n"
+                        }
+                    },
+                    {
+                        "name": "WMI Invoke-CimMethod Scheduled Task",
+                        "auto_generated_guid": "e16b3b75-dc9e-4cde-a23d-dfa2d0507b3b",
+                        "description": "Create an scheduled task that executes notepad.exe after user login from XML by leveraging WMI class PS_ScheduledTask. Does the same thing as Register-ScheduledTask cmdlet behind the scenes.\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "input_arguments": {
+                            "xml_path": {
+                                "description": "path of vbs to use when creating masquerading files",
+                                "type": "path",
+                                "default": "PathToAtomicsFolder\\T1053.005\\src\\T1053_005_WMI.xml"
+                            }
+                        },
+                        "dependency_executor_name": "powershell",
+                        "dependencies": [
+                            {
+                                "description": "File to copy must exist on disk at specified location (#{xml_path})\n",
+                                "prereq_command": "if (Test-Path \"#{xml_path}\") {exit 0} else {exit 1}\n",
+                                "get_prereq_command": "New-Item -Type Directory (split-path \"#{xml_path}\") -ErrorAction ignore | Out-Null\nInvoke-WebRequest \"https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1053.005/src/T1053_005_WMI.xml\" -OutFile \"#{xml_path}\"\n"
+                            }
+                        ],
+                        "executor": {
+                            "name": "powershell",
+                            "elevation_required": true,
+                            "command": "$xml = [System.IO.File]::ReadAllText(\"#{xml_path}\")\nInvoke-CimMethod -ClassName PS_ScheduledTask -NameSpace \"Root\\Microsoft\\Windows\\TaskScheduler\" -MethodName \"RegisterByXml\" -Arguments @{ Force = $true; Xml =$xml; }\n",
+                            "cleanup_command": "Unregister-ScheduledTask -TaskName \"T1053_005_WMI\" -confirm:$false >$null 2>&1\n"
+                        }
+                    },
+                    {
+                        "name": "Scheduled Task Executing Base64 Encoded Commands From Registry",
+                        "auto_generated_guid": "e895677d-4f06-49ab-91b6-ae3742d0a2ba",
+                        "description": "A Base64 Encoded command will be stored in the registry (ping 127.0.0.1) and then a scheduled task will be created.\nThe scheduled task will launch powershell to decode and run the command in the registry daily.\nThis is a persistence mechanism recently seen in use by Qakbot.  \n\n[Additiona Information](https://thedfirreport.com/2022/02/07/qbot-likes-to-move-it-move-it/)\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "input_arguments": {
+                            "time": {
+                                "description": "Daily scheduled task execution time",
+                                "type": "string",
+                                "default": "07:45"
+                            }
+                        },
+                        "executor": {
+                            "command": "reg add HKCU\\SOFTWARE\\ATOMIC-T1053.005 /v test /t REG_SZ /d cGluZyAxMjcuMC4wLjE= /f\nschtasks.exe /Create /F /TN \"ATOMIC-T1053.005\" /TR \"cmd /c start /min \\\"\\\" powershell.exe -Command IEX([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String((Get-ItemProperty -Path HKCU:\\\\SOFTWARE\\\\ATOMIC-T1053.005).test)))\" /sc daily /st #{time}\n",
+                            "cleanup_command": "schtasks /delete /tn \"ATOMIC-T1053.005\" /F >nul 2>&1\nreg delete HKCU\\SOFTWARE\\ATOMIC-T1053.005 /F >nul 2>&1\n",
+                            "name": "command_prompt"
+                        }
+                    },
+                    {
+                        "name": "Import XML Schedule Task with Hidden Attribute",
+                        "auto_generated_guid": "cd925593-fbb4-486d-8def-16cbdf944bf4",
+                        "description": "Create an scheduled task that executes calc.exe after user login from XML that contains hidden setting attribute. \nThis technique was seen several times in tricbot malware and also with the targetted attack campaigne the industroyer2.\n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "input_arguments": {
+                            "xml_path": {
+                                "description": "path of vbs to use when creating masquerading files",
+                                "type": "path",
+                                "default": "PathToAtomicsFolder\\T1053.005\\src\\T1053_05_SCTASK_HIDDEN_ATTRIB.xml"
+                            }
+                        },
+                        "dependency_executor_name": "powershell",
+                        "dependencies": [
+                            {
+                                "description": "File to copy must exist on disk at specified location (#{xml_path})\n",
+                                "prereq_command": "if (Test-Path \"#{xml_path}\") {exit 0} else {exit 1}\n",
+                                "get_prereq_command": "New-Item -Type Directory (split-path \"#{xml_path}\") -ErrorAction ignore | Out-Null\nInvoke-WebRequest \"https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1053.005/src/T1053_05_SCTASK_HIDDEN_ATTRIB.xml\" -OutFile \"#{xml_path}\"\n"
+                            }
+                        ],
+                        "executor": {
+                            "name": "powershell",
+                            "elevation_required": true,
+                            "command": "$xml = [System.IO.File]::ReadAllText(\"#{xml_path}\")\nInvoke-CimMethod -ClassName PS_ScheduledTask -NameSpace \"Root\\Microsoft\\Windows\\TaskScheduler\" -MethodName \"RegisterByXml\" -Arguments @{ Force = $true; Xml =$xml; }\n",
+                            "cleanup_command": "Unregister-ScheduledTask -TaskName \"atomic red team\" -confirm:$false >$null 2>&1\n"
+                        }
+                    },
+                    {
+                        "name": "PowerShell Modify A Scheduled Task",
+                        "auto_generated_guid": "dda6fc7b-c9a6-4c18-b98d-95ec6542af6d",
+                        "description": "Create a scheduled task with an action and modify the action to do something else. The initial idea is to showcase Microsoft Windows TaskScheduler Operational log modification of an action on a Task already registered. \nIt will first be created to spawn cmd.exe, but modified to run notepad.exe.\n\nUpon successful execution, powershell.exe will create a scheduled task and modify the action. \n",
+                        "supported_platforms": [
+                            "windows"
+                        ],
+                        "executor": {
+                            "name": "powershell",
+                            "elevation_required": false,
+                            "command": "$Action = New-ScheduledTaskAction -Execute \"cmd.exe\"\n$Trigger = New-ScheduledTaskTrigger -AtLogon\n$User = New-ScheduledTaskPrincipal -GroupId \"BUILTIN\\Administrators\" -RunLevel Highest\n$Set = New-ScheduledTaskSettingsSet\n$object = New-ScheduledTask -Action $Action -Principal $User -Trigger $Trigger -Settings $Set\nRegister-ScheduledTask AtomicTaskModifed -InputObject $object\n$NewAction = New-ScheduledTaskAction -Execute \"Notepad.exe\"\nSet-ScheduledTask \"AtomicTaskModifed\" -Action $NewAction\n",
+                            "cleanup_command": "Unregister-ScheduledTask -TaskName \"AtomicTaskModifed\" -confirm:$false >$null 2>&1\n"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "possible_detections": [
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "scheduled job",
+            "definition": "Information about scheduled work that run automatically in the background of a computer system (Cron deamon, Task Scheduler, BITS).",
+            "collection_layers": [
+                "host",
+                "container"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Containers"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "scheduled job creation",
+            "type": "activity",
+            "description": "A scheduled job was created, either locally or remotely.",
+            "source_data_element": "user",
+            "relationship": "created",
+            "target_data_element": "scheduled job",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/taskschd/tasks"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "scheduled job",
+            "definition": "Information about scheduled work that run automatically in the background of a computer system (Cron deamon, Task Scheduler, BITS).",
+            "collection_layers": [
+                "host",
+                "container"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Containers"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "scheduled job creation",
+            "type": "activity",
+            "description": "A scheduled job was created, either locally or remotely.",
+            "source_data_element": "process",
+            "relationship": "created",
+            "target_data_element": "scheduled job",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/taskschd/tasks"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "command",
+            "definition": "Information about commands that can be used through a command-line interface and/or script interpreter.",
+            "collection_layers": [
+                "host",
+                "container"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Network",
+                "Containers"
+            ],
+            "contributors": [
+                "Austin Clark",
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "command execution",
+            "type": "activity",
+            "description": "Information about commands executed through a command-line interface and/or script interpreter.",
+            "source_data_element": "user",
+            "relationship": "executed",
+            "target_data_element": "command",
+            "references": [
+                "https://tools.ietf.org/id/draft-ietf-opsawg-tacacs-07.html#rfc.section.7.2",
+                "https://tools.ietf.org/html/rfc2866"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "command",
+            "definition": "Information about commands that can be used through a command-line interface and/or script interpreter.",
+            "collection_layers": [
+                "host",
+                "container"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Network",
+                "Containers"
+            ],
+            "contributors": [
+                "Austin Clark",
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "command execution",
+            "type": "activity",
+            "description": "Information about commands executed through a command-line interface and/or script interpreter.",
+            "source_data_element": "process",
+            "relationship": "executed",
+            "target_data_element": "command",
+            "references": [
+                "https://tools.ietf.org/id/draft-ietf-opsawg-tacacs-07.html#rfc.section.7.2",
+                "https://tools.ietf.org/html/rfc2866"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "file",
+            "definition": "Information about file objects (All file systems) that represent computer resources that can be managed by the I/O system. This data source can be used as a reference to extend the concepts of other data sources such as driver, module, and network share.",
+            "collection_layers": [
+                "host"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Network"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "file modification",
+            "type": "activity",
+            "description": "A file was modified.",
+            "source_data_element": "process",
+            "relationship": "modified",
+            "target_data_element": "file",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/fileio/file-management",
+                "https://docs.microsoft.com/en-us/windows/win32/fileio/file-streams",
+                "https://docs.microsoft.com/en-us/troubleshoot/windows-client/backup-and-storage/fat-hpfs-and-ntfs-file-systems"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "file",
+            "definition": "Information about file objects (All file systems) that represent computer resources that can be managed by the I/O system. This data source can be used as a reference to extend the concepts of other data sources such as driver, module, and network share.",
+            "collection_layers": [
+                "host"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Network"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "file modification",
+            "type": "activity",
+            "description": "A file was modified.",
+            "source_data_element": "user",
+            "relationship": "modified",
+            "target_data_element": "file",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/fileio/file-management",
+                "https://docs.microsoft.com/en-us/windows/win32/fileio/file-streams",
+                "https://docs.microsoft.com/en-us/troubleshoot/windows-client/backup-and-storage/fat-hpfs-and-ntfs-file-systems"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "process",
+            "definition": "Information about instances of computer programs that are being executed by at least one thread.",
+            "collection_layers": [
+                "host"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "process creation",
+            "type": "activity",
+            "description": "A process was created.",
+            "source_data_element": "user",
+            "relationship": "created",
+            "target_data_element": "process",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "process",
+            "definition": "Information about instances of computer programs that are being executed by at least one thread.",
+            "collection_layers": [
+                "host"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "process creation",
+            "type": "activity",
+            "description": "A process was created.",
+            "source_data_element": "process",
+            "relationship": "created",
+            "target_data_element": "process",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads"
+            ]
+        },
+        {
+            "technique_id": "T1053.005",
+            "x_mitre_is_subtechnique": true,
+            "technique": "Scheduled Task",
+            "tactic": [
+                "execution",
+                "persistence",
+                "privilege-escalation"
+            ],
+            "platform": [
+                "Windows"
+            ],
+            "data_source": "process",
+            "definition": "Information about instances of computer programs that are being executed by at least one thread.",
+            "collection_layers": [
+                "host"
+            ],
+            "data_source_platform": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "contributors": [
+                "ATT&CK",
+                "CTID"
+            ],
+            "data_component": "process creation",
+            "type": "activity",
+            "description": "A process was created.",
+            "source_data_element": "process",
+            "relationship": "created",
+            "target_data_element": "thread",
+            "references": [
+                "https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads"
+            ]
+        },
+        {
+            "name": "Scheduled tasks used in BadRabbit ransomware",
+            "description": "This search looks for flags passed to schtasks.exe on the command-line that indicate that task names related to the execution of Bad Rabbit ransomware were created or deleted. Deprecated because we already have a similar detection",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime values(Processes.process) as process  from datamodel=Endpoint.Processes where Processes.process_name=schtasks.exe (Processes.process= \"*create*\"  OR Processes.process= \"*delete*\") by Processes.parent_process Processes.process_name Processes.user | `drop_dm_object_name(\"Processes\")` | `security_content_ctime(firstTime)`|`security_content_ctime(lastTime)` | search (process=*rhaegal* OR process=*drogon* OR *viserion_*) | `scheduled_tasks_used_in_badrabbit_ransomware_filter`",
+            "tags": {
+                "name": "Scheduled tasks used in BadRabbit ransomware",
+                "analytic_story": [
+                    "Ransomware"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "tbd",
+                "mitre_attack_id": [
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "field",
+                        "type": "Unknown",
+                        "role": [
+                            "Unknown"
+                        ]
+                    }
+                ],
+                "risk_score": 25,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Possible Lateral Movement PowerShell Spawn",
+            "description": "The following analytic is designed to identify possible lateral movement attacks that involve the spawning of a PowerShell process as a child or grandchild process of commonly abused processes. These processes include services.exe, wmiprsve.exe, svchost.exe, wsmprovhost.exe, and mmc.exe.\\\nSuch behavior is indicative of legitimate Windows features such as the Service Control Manager, Windows Management Instrumentation, Task Scheduler, Windows Remote Management, and the DCOM protocol being abused to start a process on a remote endpoint. This behavior is often seen during lateral movement techniques where adversaries or red teams abuse these services for lateral movement and remote code execution.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where (Processes.parent_process_name=wmiprvse.exe OR Processes.parent_process_name=services.exe OR Processes.parent_process_name=svchost.exe OR Processes.parent_process_name=wsmprovhost.exe OR Processes.parent_process_name=mmc.exe) (Processes.process_name=powershell.exe OR (Processes.process_name=cmd.exe AND Processes.process=*powershell.exe*) OR Processes.process_name=pwsh.exe OR (Processes.process_name=cmd.exe AND Processes.process=*pwsh.exe*)) by Processes.dest Processes.user Processes.parent_process_name Processes.process_name Processes.process Processes.process_id Processes.parent_process_id | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `possible_lateral_movement_powershell_spawn_filter`",
+            "tags": {
+                "name": "Possible Lateral Movement PowerShell Spawn",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "Malicious PowerShell",
+                    "Hermetic Wiper",
+                    "Data Destruction",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Exploitation",
+                    "Installation"
+                ],
+                "message": "A PowerShell process was spawned as a child process of typically abused processes on $dest$",
+                "mitre_attack_id": [
+                    "T1021",
+                    "T1021.003",
+                    "T1021.006",
+                    "T1047",
+                    "T1053.005",
+                    "T1543.003",
+                    "T1059.001",
+                    "T1218.014"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 45,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1021",
+                        "mitre_attack_technique": "Remote Services",
+                        "mitre_attack_tactics": [
+                            "Lateral Movement"
+                        ],
+                        "mitre_attack_groups": []
+                    },
+                    {
+                        "mitre_attack_id": "T1021.003",
+                        "mitre_attack_technique": "Distributed Component Object Model",
+                        "mitre_attack_tactics": [
+                            "Lateral Movement"
+                        ],
+                        "mitre_attack_groups": []
+                    },
+                    {
+                        "mitre_attack_id": "T1021.006",
+                        "mitre_attack_technique": "Windows Remote Management",
+                        "mitre_attack_tactics": [
+                            "Lateral Movement"
+                        ],
+                        "mitre_attack_groups": [
+                            "Chimera",
+                            "Threat Group-3390",
+                            "Wizard Spider"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1047",
+                        "mitre_attack_technique": "Windows Management Instrumentation",
+                        "mitre_attack_tactics": [
+                            "Execution"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT29",
+                            "APT32",
+                            "APT41",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Deep Panda",
+                            "Earth Lusca",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "Indrik Spider",
+                            "Lazarus Group",
+                            "Leviathan",
+                            "Magic Hound",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Sandworm Team",
+                            "Stealth Falcon",
+                            "Threat Group-3390",
+                            "Windshift",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1543.003",
+                        "mitre_attack_technique": "Windows Service",
+                        "mitre_attack_tactics": [
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT19",
+                            "APT3",
+                            "APT32",
+                            "APT38",
+                            "APT41",
+                            "Blue Mockingbird",
+                            "Carbanak",
+                            "Cobalt Group",
+                            "DarkVishnya",
+                            "Earth Lusca",
+                            "FIN7",
+                            "Ke3chang",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "PROMETHIUM",
+                            "TeamTNT",
+                            "Threat Group-3390",
+                            "Tropic Trooper",
+                            "Wizard Spider"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1059.001",
+                        "mitre_attack_technique": "PowerShell",
+                        "mitre_attack_tactics": [
+                            "Execution"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT19",
+                            "APT28",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "Aquatic Panda",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "CopyKittens",
+                            "DarkHydrus",
+                            "DarkVishnya",
+                            "Deep Panda",
+                            "Dragonfly",
+                            "Earth Lusca",
+                            "Ember Bear",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "GOLD SOUTHFIELD",
+                            "Gallmaker",
+                            "Gamaredon Group",
+                            "Gorgon Group",
+                            "HAFNIUM",
+                            "HEXANE",
+                            "Inception",
+                            "Indrik Spider",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LazyScripter",
+                            "Leviathan",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Nomadic Octopus",
+                            "OilRig",
+                            "Patchwork",
+                            "Poseidon Group",
+                            "Sandworm Team",
+                            "Sidewinder",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TA459",
+                            "TA505",
+                            "TEMP.Veles",
+                            "TeamTNT",
+                            "Threat Group-3390",
+                            "Thrip",
+                            "Tonto Team",
+                            "Turla",
+                            "WIRTE",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1218.014",
+                        "mitre_attack_technique": "MMC",
+                        "mitre_attack_tactics": [
+                            "Defense Evasion"
+                        ],
+                        "mitre_attack_groups": []
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Randomly Generated Scheduled Task Name",
+            "description": "The following hunting analytic leverages Event ID 4698, `A scheduled task was created`, to identify the creation of a Scheduled Task with a suspicious, high entropy, Task Name. To achieve this, this analytic also leverages the `ut_shannon` function from the URL ToolBox Splunk application. Red teams and adversaries alike may abuse the Task Scheduler to create and start a remote Scheduled Task and obtain remote code execution. To achieve this goal, tools like Impacket or Crapmapexec, typically create a Scheduled Task with a random task name on the victim host. This hunting analytic may help defenders identify Scheduled Tasks created as part of a lateral movement attack. The entropy threshold `ut_shannon > 3` should be customized by users. The Command field can be used to determine if the task has malicious intent or not.",
+            "search": " `wineventlog_security` EventCode=4698 | xmlkv Message | lookup ut_shannon_lookup word as Task_Name | where ut_shannon > 3 | table  _time, dest, Task_Name, ut_shannon, Command, Author, Enabled, Hidden | `randomly_generated_scheduled_task_name_filter`",
+            "tags": {
+                "name": "Randomly Generated Scheduled Task Name",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "CISA AA22-257A",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A windows scheduled task with a suspicious task name was created on $dest$",
+                "mitre_attack_id": [
+                    "T1053",
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.AE"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 45,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Scheduled Task Deleted Or Created via CMD",
+            "description": "This analytic focuses on identifying the creation or deletion of scheduled tasks using the schtasks.exe utility with the corresponding command-line flags (-create or -delete). This technique has been notably associated with threat actors like Dragonfly and the SUNBURST attack against SolarWinds. The purpose of this analytic is to detect suspicious activity related to scheduled tasks that could indicate malicious intent or unauthorized system manipulation. By monitoring for these specific command-line flags, we can enhance our ability to identify potential threats and prevent attacks similar to the use of scheduled tasks in the BadRabbit Ransomware incident.",
+            "search": "| tstats `security_content_summariesonly` count values(Processes.process) as process values(Processes.parent_process) as parent_process min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where Processes.process_name=schtasks.exe (Processes.process=*delete* OR Processes.process=*create*) by Processes.user Processes.process_name Processes.parent_process_name Processes.dest | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)`| `security_content_ctime(lastTime)` | `scheduled_task_deleted_or_created_via_cmd_filter` ",
+            "tags": {
+                "name": "Scheduled Task Deleted Or Created via CMD",
+                "analytic_story": [
+                    "Qakbot",
+                    "NOBELIUM Group",
+                    "Windows Persistence Techniques",
+                    "Winter Vivern",
+                    "Prestige Ransomware",
+                    "DarkCrystal RAT",
+                    "AgentTesla",
+                    "Trickbot",
+                    "AsyncRAT",
+                    "Sandworm Tools",
+                    "Living Off The Land",
+                    "CISA AA22-257A",
+                    "DHS Report TA18-074A",
+                    "Azorult",
+                    "Amadey",
+                    "Scheduled Tasks",
+                    "NjRAT"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A schedule task process $process_name$ with create or delete commandline $process$ in host $dest$",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 56,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Scheduled Task Initiation on Remote Endpoint",
+            "description": "This analytic detects instances of 'schtasks.exe' being used to start a Scheduled Task on a remote endpoint. Adversaries often abuse the Task Scheduler for lateral movement and remote code execution. The search parameters include process details such as the process  name, parent process, and command-line executions. Although legitimate administrators may start scheduled tasks on remote systems, this activity is usually limited to a small set of hosts or users. The findings from this analytic provide valuable insight into potentially malicious activities on an endpoint.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where (Processes.process_name=schtasks.exe OR Processes.original_file_name=schtasks.exe) (Processes.process=*/s* AND Processes.process=*/run*) by Processes.dest Processes.user Processes.parent_process_name Processes.process_name Processes.process Processes.process_id Processes.parent_process_id | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)`| `security_content_ctime(lastTime)` | `scheduled_task_initiation_on_remote_endpoint_filter`",
+            "tags": {
+                "name": "Scheduled Task Initiation on Remote Endpoint",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "Living Off The Land",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A Windows Scheduled Task was ran on a remote endpoint from $dest",
+                "mitre_attack_id": [
+                    "T1053",
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 54,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Schtasks scheduling job on remote system",
+            "description": "The following analytic is designed to detect suspicious command-line arguments executed through 'schtasks.exe' to create a scheduled task on a remote endpoint. The analytic scans process data, checking for instances where 'schtasks.exe' has been used with specific command-line flags that suggest an attempt at lateral movement or remote code execution, common techniques employed by adversaries and red teams. Key data points include the process name, the specific command line used, the parent process name, the target destination, and the user involved. Also, timestamp data gives context to when these activities occurred.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where (Processes.process_name = schtasks.exe OR Processes.original_file_name=schtasks.exe) (Processes.process=\"*/create*\" AND Processes.process=\"*/s*\") by Processes.process_name Processes.process Processes.parent_process_name Processes.dest Processes.user | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `schtasks_scheduling_job_on_remote_system_filter`",
+            "tags": {
+                "name": "Schtasks scheduling job on remote system",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "NOBELIUM Group",
+                    "Living Off The Land",
+                    "Prestige Ransomware",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A schedule task process $process_name$ with remote job command-line $process$ in host $dest$ by $user$.",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "process_name",
+                        "type": "Process",
+                        "role": [
+                            "Child Process"
+                        ]
+                    }
+                ],
+                "risk_score": 63,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Schtasks used for forcing a reboot",
+            "description": "The following analytic utilizes a Splunk query to pinpoint potential threats by monitoring the 'schtasks.exe' command-line usage. This particular command, especially when used in tandem with 'shutdown' and '/create' flags, can suggest an adversarial force intending to schedule unwarranted system reboots. The query focuses on endpoint process data and retrieves details such as the process name, the parent process name, the destination, and the user involved. Essential to the investigation are the earliest and latest timestamps of these events, providing an activity timeline. Data such as the targeted host and initiating user offer valuable context for analyst.",
+            "search": "| tstats `security_content_summariesonly` values(Processes.process) as process min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where Processes.process_name=schtasks.exe Processes.process=\"*shutdown*\" Processes.process=\"*/create *\" by Processes.process_name Processes.parent_process_name Processes.dest Processes.user | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `schtasks_used_for_forcing_a_reboot_filter`",
+            "tags": {
+                "name": "Schtasks used for forcing a reboot",
+                "analytic_story": [
+                    "Windows Persistence Techniques",
+                    "Ransomware",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A schedule task process $process_name$ with force reboot commandline $process$ in host $dest$",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 56,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Short Lived Scheduled Task",
+            "description": "The following analytic utilizes Windows Security EventCode 4698, \"A scheduled task was created,\" and EventCode 4699, \"A scheduled task was deleted,\" to identify scheduled tasks that are created and deleted within a short time frame of less than 30 seconds. This behavior is indicative of a potential lateral movement attack where the Task Scheduler is abused to achieve code execution. Both red teams and adversaries may exploit the Task Scheduler for lateral movement and remote code execution.\\\nTo implement this analytic, ensure that you are ingesting Windows Security Event Logs with EventCode 4698 enabled. Additionally, the Windows TA (Technology Add-on) is required to parse and extract the necessary information from the logs.\\\nIt's important to note that while uncommon, legitimate applications may create and delete scheduled tasks within a short duration. Analysts should filter the results based on the specific context and environment to reduce false positives.\\\nIdentifying short-lived scheduled tasks is valuable for a SOC as it can indicate malicious activities attempting to move laterally or execute unauthorized code on Windows systems. By detecting and investigating these events, security analysts can respond promptly to prevent further compromise and mitigate potential risks. The impact of a true positive could range from unauthorized access to data exfiltration or the execution of malicious payloads.",
+            "search": " `wineventlog_security` EventCode=4698 OR EventCode=4699 | xmlkv Message | transaction Task_Name  startswith=(EventCode=4698) endswith=(EventCode=4699) | eval short_lived=case((duration<30),\"TRUE\") | search  short_lived = TRUE | rename ComputerName as dest| table _time, dest, Account_Name, Command, Task_Name, short_lived | `short_lived_scheduled_task_filter` ",
+            "tags": {
+                "name": "Short Lived Scheduled Task",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "CISA AA22-257A",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A windows scheduled task was created and deleted in 30 seconds on $dest$",
+                "mitre_attack_id": [
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 81,
+                "security_domain": "endpoint",
+                "risk_severity": "high",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Suspicious Scheduled Task from Public Directory",
+            "description": "The following analytic, \"Suspicious Scheduled Task from Public Directory\", detects the registration of scheduled tasks aimed to execute a binary or script from public directories, a behavior often associated with malware deployment. It utilizes the Sysmon Event ID 1 data source, searching for instances where schtasks.exe is connected with the directories users\\public, \\programdata\\, or \\windows\\temp and involves the /create command.\\\nThe registration of such scheduled tasks in public directories could suggest that an attacker is trying to maintain persistence or execute malicious scripts. If confirmed as a true positive, this could lead to data compromise, unauthorized access, and potential lateral movement within the network.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where Processes.process_name=schtasks.exe (Processes.process=*\\\\users\\\\public\\\\* OR Processes.process=*\\\\programdata\\\\* OR Processes.process=*windows\\\\temp*)  Processes.process=*/create* by Processes.dest Processes.user Processes.parent_process Processes.process_name Processes.process Processes.process_id Processes.parent_process_id | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)`| `security_content_ctime(lastTime)`| `suspicious_scheduled_task_from_public_directory_filter`",
+            "tags": {
+                "name": "Suspicious Scheduled Task from Public Directory",
+                "analytic_story": [
+                    "Ransomware",
+                    "Ryuk Ransomware",
+                    "Windows Persistence Techniques",
+                    "Living Off The Land",
+                    "Azorult",
+                    "DarkCrystal RAT",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "Suspicious scheduled task registered on $dest$ from Public Directory",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.AE"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 35,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Svchost LOLBAS Execution Process Spawn",
+            "description": "The following analytic is designed to spot instances of 'svchost.exe' initiating a Living Off The Land Binaries and Scripts (LOLBAS) execution process. Often, adversaries manipulate Task Scheduler to execute code on remote endpoints, resulting in the spawning of a malicious command as a child process of 'svchost.exe'. By tracking child processes of 'svchost.exe' that align with the LOLBAS project, potential lateral movement activity can be detected. The analytic examines process details, including the process name, parent process, and command-line executions. A comprehensive list of LOLBAS processes is included in the search parameters. Although the analytic might catch legitimate applications exhibiting this behavior, these instances should be filtered accordingly. The findings from this analytic offer valuable insight into potentially malicious activities on an endpoint.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where (Processes.parent_process_name=svchost.exe) (Processes.process_name IN (\"Regsvcs.exe\", \"Ftp.exe\", \"OfflineScannerShell.exe\", \"Rasautou.exe\", \"Schtasks.exe\", \"Xwizard.exe\", \"Pnputil.exe\", \"Atbroker.exe\", \"Pcwrun.exe\", \"Ttdinject.exe\",\"Mshta.exe\", \"Bitsadmin.exe\", \"Certoc.exe\", \"Ieexec.exe\", \"Microsoft.Workflow.Compiler.exe\", \"Runscripthelper.exe\", \"Forfiles.exe\", \"Msbuild.exe\", \"Register-cimprovider.exe\", \"Tttracer.exe\", \"Ie4uinit.exe\", \"Bash.exe\", \"Hh.exe\", \"SettingSyncHost.exe\", \"Cmstp.exe\", \"Stordiag.exe\", \"Scriptrunner.exe\", \"Odbcconf.exe\", \"Extexport.exe\", \"Msdt.exe\", \"WorkFolders.exe\", \"Diskshadow.exe\", \"Mavinject.exe\", \"Regasm.exe\", \"Gpscript.exe\", \"Regsvr32.exe\", \"Msiexec.exe\", \"Wuauclt.exe\", \"Presentationhost.exe\", \"Wmic.exe\", \"Runonce.exe\", \"Syncappvpublishingserver.exe\", \"Verclsid.exe\", \"Infdefaultinstall.exe\", \"Installutil.exe\", \"Netsh.exe\", \"Wab.exe\", \"Dnscmd.exe\", \"At.exe\", \"Pcalua.exe\", \"Msconfig.exe\")) by Processes.dest Processes.user Processes.parent_process Processes.process_name Processes.process Processes.process_id Processes.parent_process_id | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `svchost_lolbas_execution_process_spawn_filter`",
+            "tags": {
+                "name": "Svchost LOLBAS Execution Process Spawn",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "Living Off The Land",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "Svchost.exe spawned a LOLBAS process on $dest$",
+                "mitre_attack_id": [
+                    "T1053",
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 54,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows Enable Win32 ScheduledJob via Registry",
+            "description": "This analytic searches for a registry modification that enables the use of the at.exe or wmi Win32_ScheduledJob command to add scheduled tasks on a Windows endpoint. Specifically, it looks for the creation of a new DWORD value named \"EnableAt\" in the following registry path: \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Configuration\". If this value is set to 1, it enables the at.exe and wmi Win32_ScheduledJob commands to schedule tasks on the system. Detecting this registry modification is important because it may indicate that an attacker has enabled the ability to add scheduled tasks to the system, which can be used to execute malicious code at specific times or intervals.",
+            "search": "| tstats `security_content_summariesonly` count values(Registry.registry_key_name) as registry_key_name values(Registry.registry_path) as registry_path min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Registry where Registry.registry_path=\"*\\\\CurrentVersion\\\\Schedule\\\\Configuration*\" Registry.registry_value_name=EnableAt  by Registry.dest, Registry.user, Registry.registry_value_name, Registry.registry_value_type | `security_content_ctime(lastTime)` | `security_content_ctime(firstTime)` | `drop_dm_object_name(Registry)` | `windows_enable_win32_scheduledjob_via_registry_filter`",
+            "tags": {
+                "name": "Windows Enable Win32 ScheduledJob via Registry",
+                "analytic_story": [
+                    "Active Directory Lateral Movement",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A process has modified the schedule task registry value - EnableAt - on endpoint $dest$ by user $user$.",
+                "mitre_attack_id": [
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.AE"
+                ],
+                "observable": [
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 25,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows PowerShell ScheduleTask",
+            "description": "The following analytic detects potential malicious activities related to PowerShell's task scheduling cmdlets. It looks for anomalies in PowerShell logs, specifically EventCode 4104, associated with script block logging. The analytic flags unusual or suspicious use patterns of key task-related cmdlets such as 'New-ScheduledTask', 'Set-ScheduledTask', and others, which are often used by attackers for persistence and remote execution of malicious code. If a true positive is found, it suggests an possible attacker is attempting to persist within the environment or potentially deliver additional malicious payloads, leading to data theft, ransomware, or other damaging outcomes. To implement this analytic, PowerShell Script Block Logging needs to be enabled on some or all endpoints. Analysts should be aware of benign administrative tasks that can trigger alerts and tune the analytic accordingly to reduce false positives. Upon triage, review the PowerShell logs for any unusual or unexpected cmdlet usage, IP addresses, user accounts, or timestamps. If these factors align with known malicious behavior patterns, immediate mitigation steps, such as isolation of the affected systems, user account changes, and relevant threat hunting activities, should be initiated. This proactive analysis significantly enhances an organization's capacity to swiftly respond to, and potentially prevent, the execution of advanced persistent threats in their network.",
+            "search": "`powershell` EventCode=4104 ScriptBlockText IN (\"*New-ScheduledTask*\", \"*New-ScheduledTaskAction*\", \"*New-ScheduledTaskSettingsSet*\", \"*New-ScheduledTaskTrigger*\", \"*Register-ClusteredScheduledTask*\", \"*Register-ScheduledTask*\", \"*Set-ClusteredScheduledTask*\", \"*Set-ScheduledTask*\", \"*Start-ScheduledTask*\", \"*Enable-ScheduledTask*\") | stats count min(_time) as firstTime max(_time) as lastTime by EventCode ScriptBlockText Computer user_id | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `windows_powershell_scheduletask_filter`",
+            "tags": {
+                "name": "Windows PowerShell ScheduleTask",
+                "analytic_story": [
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "The PowerShell cmdlets related to task creation, modification and start occurred on $Computer$ by $user_id$.",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1059.001",
+                    "T1059"
+                ],
+                "nist": [
+                    "DE.AE"
+                ],
+                "observable": [
+                    {
+                        "name": "Computer",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user_id",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 25,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "atomic_guid": [
+                    "af9fd58f-c4ac-4bf2-a9ba-224b71ff25fd"
+                ],
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1059.001",
+                        "mitre_attack_technique": "PowerShell",
+                        "mitre_attack_tactics": [
+                            "Execution"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT19",
+                            "APT28",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "Aquatic Panda",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "CopyKittens",
+                            "DarkHydrus",
+                            "DarkVishnya",
+                            "Deep Panda",
+                            "Dragonfly",
+                            "Earth Lusca",
+                            "Ember Bear",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "GOLD SOUTHFIELD",
+                            "Gallmaker",
+                            "Gamaredon Group",
+                            "Gorgon Group",
+                            "HAFNIUM",
+                            "HEXANE",
+                            "Inception",
+                            "Indrik Spider",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LazyScripter",
+                            "Leviathan",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Nomadic Octopus",
+                            "OilRig",
+                            "Patchwork",
+                            "Poseidon Group",
+                            "Sandworm Team",
+                            "Sidewinder",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TA459",
+                            "TA505",
+                            "TEMP.Veles",
+                            "TeamTNT",
+                            "Threat Group-3390",
+                            "Thrip",
+                            "Tonto Team",
+                            "Turla",
+                            "WIRTE",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1059",
+                        "mitre_attack_technique": "Command and Scripting Interpreter",
+                        "mitre_attack_tactics": [
+                            "Execution"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT19",
+                            "APT32",
+                            "APT37",
+                            "APT39",
+                            "Dragonfly",
+                            "FIN5",
+                            "FIN6",
+                            "FIN7",
+                            "Fox Kitten",
+                            "Ke3chang",
+                            "OilRig",
+                            "Stealth Falcon",
+                            "Whitefly",
+                            "Windigo"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows Registry Delete Task SD",
+            "description": "The following analytic identifies a process attempting to delete a scheduled task SD (Security Descriptor) from within the registry path of that task. This may occur from a non-standard process running and may not come from reg.exe. This particular behavior will remove the actual Task Name from the Task Scheduler GUI and from the command-line query - schtasks.exe /query. In addition, in order to perform this action, the user context will need to be SYSTEM.\\ Identifying the deletion of a scheduled task's Security Descriptor from the registry is significant for a SOC as it may indicate malicious activity attempting to remove evidence of a scheduled task, potentially for defense evasion purposes. If a true positive is detected, it suggests an attacker with privileged access attempting to remove traces of their activities, which can have a significant impact on the security and functionality of affected systems. Immediate investigation and response are required to mitigate further risks and preserve the integrity of the environment.",
+            "search": "| tstats `security_content_summariesonly` count from datamodel=Endpoint.Registry where Registry.registry_path IN (\"*\\\\Schedule\\\\TaskCache\\\\Tree\\\\*\") Registry.user=\"SYSTEM\" Registry.registry_value_name=\"SD\" (Registry.action=Deleted OR Registry.action=modified) by _time  Registry.dest Registry.process_guid Registry.user Registry.registry_path Registry.registry_value_name Registry.registry_key_name Registry.registry_value_data Registry.status Registry.action | `drop_dm_object_name(Registry)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `windows_registry_delete_task_sd_filter`",
+            "tags": {
+                "name": "Windows Registry Delete Task SD",
+                "analytic_story": [
+                    "Windows Registry Abuse",
+                    "Windows Persistence Techniques",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A scheduled task security descriptor was deleted from the registry on $dest$.",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1562"
+                ],
+                "nist": [
+                    "DE.AE"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 49,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1562",
+                        "mitre_attack_technique": "Impair Defenses",
+                        "mitre_attack_tactics": [
+                            "Defense Evasion"
+                        ],
+                        "mitre_attack_groups": [
+                            "Magic Hound"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows Scheduled Task Created Via XML",
+            "description": "The following analytic detects the creation of suspicious scheduled tasks in Windows, specifically tasks created using schtasks.exe with the -create flag and an XML parameter in the command-line. This technique is commonly employed by threat actors, adversaries, and red teamers to establish persistence or achieve privilege escalation on targeted hosts. Notably, malware like Trickbot and Winter-Vivern have been observed using XML files to create scheduled tasks. Monitoring and investigating this activity is crucial to mitigate potential security risks. It is important to be aware that scripts or administrators may trigger this analytic, leading to potential false positives. To minimize false positives, adjust the filter based on the parent process or application.\\\nWhen a true positive is detected, it suggests an attacker's attempt to gain persistence or execute additional malicious payloads, potentially resulting in data theft, ransomware, or other damaging outcomes. During triage, review the source of the scheduled task, the command to be executed, and capture any relevant on-disk artifacts. Analyze concurrent processes to identify the source of the attack. This analytic enables analysts to detect and respond to potential threats early, mitigating the associated risks effectively.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where Processes.process_name=schtasks.exe Processes.process=*create* Processes.process=\"* /xml *\" by Processes.user  Processes.parent_process_name Processes.parent_process Processes.process_name Processes.process Processes.process_guid Processes.process_id Processes.parent_process_guid Processes.dest | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `windows_scheduled_task_created_via_xml_filter`",
+            "tags": {
+                "name": "Windows Scheduled Task Created Via XML",
+                "analytic_story": [
+                    "Winter Vivern",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A scheduled task process, $process_name$, with 'create' or 'delete' commands present in the command line.",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 49,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows Scheduled Task Service Spawned Shell",
+            "description": "The following analytic identifies when the Task Scheduler service \"svchost.exe -k netsvcs -p -s Schedule\" is the parent process to common command line, scripting, or shell execution binaries. Attackers often abuse the task scheduler service with these binaries as an execution and persistence mechanism in order to blend in with normal Windows operations. This TTP is also commonly seen for legitimate purposes such as business scripts or application updates.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where Processes.parent_process=\"*\\\\system32\\\\svchost.exe*\" AND Processes.parent_process=\"*-k*\" AND Processes.parent_process= \"*netsvcs*\" AND Processes.parent_process=\"*-p*\" AND Processes.parent_process=\"*-s*\" AND Processes.parent_process=\"*Schedule*\" Processes.process_name IN(\"powershell.exe\", \"wscript.exe\", \"cscript.exe\", \"cmd.exe\", \"sh.exe\", \"ksh.exe\", \"zsh.exe\", \"bash.exe\", \"scrcons.exe\",\"pwsh.exe\") by Processes.dest Processes.user Processes.parent_process Processes.process_name Processes.process Processes.process_id Processes.parent_process_id Processes.parent_process_name | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `windows_scheduled_task_service_spawned_shell_filter`",
+            "tags": {
+                "name": "Windows Scheduled Task Service Spawned Shell",
+                "analytic_story": [
+                    "Windows Persistence Techniques"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A windows scheduled task spawned the shell application $process_name$ on $dest$.",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1059"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "type": "User",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "process",
+                        "type": "Process Name",
+                        "role": [
+                            "Attacker"
+                        ]
+                    }
+                ],
+                "risk_score": 20,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1059",
+                        "mitre_attack_technique": "Command and Scripting Interpreter",
+                        "mitre_attack_tactics": [
+                            "Execution"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT19",
+                            "APT32",
+                            "APT37",
+                            "APT39",
+                            "Dragonfly",
+                            "FIN5",
+                            "FIN6",
+                            "FIN7",
+                            "Fox Kitten",
+                            "Ke3chang",
+                            "OilRig",
+                            "Stealth Falcon",
+                            "Whitefly",
+                            "Windigo"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows Scheduled Task with Highest Privileges",
+            "description": "The following analytic detects the creation of a new task with the highest execution privilege via Schtasks.exe. This tactic is often observed in AsyncRAT attacks, where the scheduled task is used for persistence and privilege escalation. AsyncRAT sets up a scheduled task with parameters '/rl' and 'highest', triggering this technique. It's a strong indicator of potential malware or adversaries seeking to establish persistence and escalate privileges through scheduled tasks. This is crucial for a Security Operations Center (SOC) as it can prevent unauthorized system access and potential data breaches.\\\nThe analytic works by monitoring logs for process name, parent process, and command-line executions. In the presence of the '*/rl ' and ' highest *' commands in a schtasks.exe process, an alert is triggered.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime  from datamodel=Endpoint.Processes where Processes.process_name = \"schtasks.exe\" Processes.process = \"*/rl *\" Processes.process = \"* highest *\" by Processes.process_name Processes.parent_process_name Processes.parent_process Processes.process Processes.process_guid Processes.dest Processes.user | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `windows_scheduled_task_with_highest_privileges_filter`",
+            "tags": {
+                "name": "Windows Scheduled Task with Highest Privileges",
+                "analytic_story": [
+                    "AsyncRAT",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "a $process_name$ creating a schedule task $process$ with highest run level privilege in $dest$",
+                "mitre_attack_id": [
+                    "T1053",
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 64,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Windows Schtasks Create Run As System",
+            "description": "The following analytic identifies the creation of a new task to start and run as an elevated user - SYSTEM using Schtasks.exe. This behavior is commonly used by adversaries to spawn a process in an elevated state. If a true positive is found, it suggests an attacker is attempting to persist within the environment or potentially deliver additional malicious payloads, leading to data theft, ransomware, or other damaging outcomes. Upon triage, review the scheduled task's source and the command to be executed. Capture and inspect any relevant on-disk artifacts, and look for concurrent processes to identify the attack source. This approach helps analysts detect potential threats earlier and mitigate the risks.",
+            "search": "| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime from datamodel=Endpoint.Processes where `process_schtasks` Processes.process=\"*/create *\" AND Processes.process=\"*/ru *\" AND Processes.process=\"*system*\" by Processes.dest Processes.user Processes.parent_process_name Processes.process_name Processes.original_file_name Processes.process Processes.process_id Processes.parent_process_id | `drop_dm_object_name(Processes)` | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `windows_schtasks_create_run_as_system_filter`",
+            "tags": {
+                "name": "Windows Schtasks Create Run As System",
+                "analytic_story": [
+                    "Windows Persistence Techniques",
+                    "Qakbot",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "An $process_name$ was created on endpoint $dest$ attempting to spawn as SYSTEM.",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "process_name",
+                        "type": "Process",
+                        "role": [
+                            "Child Process"
+                        ]
+                    }
+                ],
+                "risk_score": 48,
+                "security_domain": "endpoint",
+                "risk_severity": "low",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "WinEvent Scheduled Task Created to Spawn Shell",
+            "description": "The following query utilizes Windows Security EventCode 4698, indicating 'a scheduled task was created', to identify potentially suspicious tasks. These tasks may be registered on Windows through either schtasks.exe or TaskService, and are set up to execute a command with a native Windows shell such as PowerShell, Cmd, Wscript, or Cscript.\\\nThe search will return the initial and final times the task was registered, along with details like the 'Command' set to be executed, 'Task Name', 'Author', whether it's 'Enabled', and if it is 'Hidden'.\\\nSchtasks.exe is typically found in C:\\Windows\\system32 and C:\\Windows\\syswow64. The DLL 'taskschd.dll' is loaded when either schtasks.exe or TaskService is launched. If this DLL is found loaded by another process, it's possible that a scheduled task is being registered within the context of that process in memory.\\\nDuring triage, it's essential to identify the source of the scheduled task. Was it registered via schtasks.exe or TaskService? Review the job that was created and the command set to be executed. It's also recommended to capture and review any artifacts on disk, and identify any parallel processes within the same timeframe to locate the source.",
+            "search": "`wineventlog_security` EventCode=4698 | xmlkv Message | search Command IN (\"*powershell.exe*\", \"*wscript.exe*\", \"*cscript.exe*\", \"*cmd.exe*\", \"*sh.exe*\", \"*ksh.exe*\", \"*zsh.exe*\", \"*bash.exe*\", \"*scrcons.exe*\", \"*pwsh.exe*\") | stats count min(_time) as firstTime max(_time) as lastTime by dest, Task_Name, Command, Author, Enabled, Hidden | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `winevent_scheduled_task_created_to_spawn_shell_filter`",
+            "tags": {
+                "name": "WinEvent Scheduled Task Created to Spawn Shell",
+                "analytic_story": [
+                    "Ransomware",
+                    "Windows Persistence Techniques",
+                    "Winter Vivern",
+                    "Ryuk Ransomware",
+                    "CISA AA22-257A",
+                    "Scheduled Tasks",
+                    "Windows Error Reporting Service Elevation of Privilege Vulnerability"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A windows scheduled task was created (task name=$Task_Name$) on $dest$ by the following command: $Command$",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "Command",
+                        "type": "Unknown",
+                        "role": [
+                            "Target"
+                        ]
+                    }
+                ],
+                "risk_score": 70,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "WinEvent Scheduled Task Created Within Public Path",
+            "description": "The following analytic utilizes Windows Security EventCode 4698, which indicates the creation of a scheduled task on a Windows system. The purpose of this query is to identify suspicious tasks that have been registered using either schtasks.exe or TaskService and involve executing a command from a user-writable file path.\\\nWhen this analytic is triggered, it provides information such as the first and last registration time of the task, the command to be executed, the task name, author, and whether it is set as hidden or not. It is worth noting that schtasks.exe is commonly located in C:\\Windows\\system32 and C:\\Windows\\syswow64, and it loads the taskschd.dll DLL when launched. If this DLL is loaded by another process, it suggests that a scheduled task may be registered within that process's context in memory.\\\nDuring the triage process, it is essential to identify the source of the scheduled task creation, whether it was initiated through schtasks.exe or TaskService. The analyst should review the task that was created, including the command to be executed. Additionally, any artifacts on disk related to the task should be captured and analyzed. It is also recommended to identify any parallel processes that occurred within the same timeframe to determine the source of the task creation.\\\nBy conducting this triage process, security analysts can gain insights into potentially malicious or suspicious scheduled tasks, helping them identify the source and assess the impact of the task. This analytic is valuable for a Security Operations Center (SOC) as it can detect unauthorized or suspicious activity that could indicate an attacker's attempt to establish persistence or execute unauthorized commands on the system.\\",
+            "search": "`wineventlog_security` EventCode=4698 | xmlkv Message | search Command IN (\"*\\\\users\\\\public\\\\*\", \"*\\\\programdata\\\\*\", \"*\\\\temp\\\\*\", \"*\\\\Windows\\\\Tasks\\\\*\", \"*\\\\appdata\\\\*\", \"*\\\\perflogs\\\\*\") | stats count min(_time) as firstTime max(_time) as lastTime by dest, Task_Name, Command, Author, Enabled, Hidden | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `winevent_scheduled_task_created_within_public_path_filter`",
+            "tags": {
+                "name": "WinEvent Scheduled Task Created Within Public Path",
+                "analytic_story": [
+                    "Ransomware",
+                    "Windows Persistence Techniques",
+                    "Winter Vivern",
+                    "Prestige Ransomware",
+                    "AsyncRAT",
+                    "Ryuk Ransomware",
+                    "IcedID",
+                    "CISA AA22-257A",
+                    "Industroyer2",
+                    "Active Directory Lateral Movement",
+                    "Data Destruction",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A windows scheduled task was created (task name=$Task_Name$) on $dest$ by the following command: $Command$",
+                "mitre_attack_id": [
+                    "T1053.005",
+                    "T1053"
+                ],
+                "nist": [
+                    "DE.CM"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Endpoint",
+                        "role": [
+                            "Victim"
+                        ]
+                    },
+                    {
+                        "name": "Command",
+                        "type": "Unknown",
+                        "role": [
+                            "Target"
+                        ]
+                    }
+                ],
+                "risk_score": 70,
+                "security_domain": "endpoint",
+                "risk_severity": "medium",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    },
+                    {
+                        "mitre_attack_id": "T1053",
+                        "mitre_attack_technique": "Scheduled Task/Job",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "Earth Lusca"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "WinEvent Windows Task Scheduler Event Action Started",
+            "description": "The following hunting analytic aims to identify suspicious tasks that have been registered and executed in Windows using EventID 200 (action run) and 201 (action completed) from the Windows Task Scheduler logs. This analytic helps detect evasive techniques used to register tasks on Windows systems. It is recommended to filter the results based on the ActionName field by specifying specific paths that are not commonly used in your environment.\\\nAfter implementing this analytic, it is important to review parallel events related to the scheduled tasks. EventID 106 will be generated when a new task is created, but it does not necessarily mean that the task has been executed. Analysts should capture any files on disk associated with the task and perform further analysis.\\\nTo implement this analytic, Task Scheduler logs must be collected. This can be done by adding a stanza for [WinEventLog://Microsoft-Windows-TaskScheduler/Operational] in the inputs.conf file and setting renderXml=false. It is worth noting that not translating the logs into XML may require specific extraction of items from the Message field.\\\nFalse positives are expected with this analytic, so it is important to filter the results based on the paths or specific keywords of interest in the ActionName field to reduce noise.\\\nIdentifying and analyzing scheduled tasks that have been executed is crucial for a Security Operations Center (SOC) as it helps detect potentially malicious or unauthorized activities on Windows systems. By capturing and investigating the associated events, analysts can uncover signs of persistence mechanisms, unauthorized code execution, or suspicious behaviors. The impact of a true positive could range from unauthorized access to data exfiltration or the execution of malicious payloads.",
+            "search": "`wineventlog_task_scheduler` EventCode IN (\"200\",\"201\") | rename ComputerName as dest | stats count min(_time) as firstTime max(_time) as lastTime by Message dest EventCode category | `security_content_ctime(firstTime)` | `security_content_ctime(lastTime)` | `winevent_windows_task_scheduler_event_action_started_filter`",
+            "tags": {
+                "name": "WinEvent Windows Task Scheduler Event Action Started",
+                "analytic_story": [
+                    "Qakbot",
+                    "Windows Persistence Techniques",
+                    "Winter Vivern",
+                    "Prestige Ransomware",
+                    "DarkCrystal RAT",
+                    "AsyncRAT",
+                    "Winter Vivern",
+                    "IcedID",
+                    "CISA AA22-257A",
+                    "Industroyer2",
+                    "Sandworm Tools",
+                    "Data Destruction",
+                    "Amadey",
+                    "Scheduled Tasks"
+                ],
+                "asset_type": "Endpoint",
+                "cis20": [
+                    "CIS 10"
+                ],
+                "kill_chain_phases": [
+                    "Installation",
+                    "Exploitation"
+                ],
+                "message": "A Scheduled Task was scheduled and ran on $dest$.",
+                "mitre_attack_id": [
+                    "T1053.005"
+                ],
+                "nist": [
+                    "DE.AE"
+                ],
+                "observable": [
+                    {
+                        "name": "dest",
+                        "type": "Hostname",
+                        "role": [
+                            "Victim"
+                        ]
+                    }
+                ],
+                "risk_score": 80,
+                "security_domain": "endpoint",
+                "risk_severity": "high",
+                "mitre_attack_enrichments": [
+                    {
+                        "mitre_attack_id": "T1053.005",
+                        "mitre_attack_technique": "Scheduled Task",
+                        "mitre_attack_tactics": [
+                            "Execution",
+                            "Persistence",
+                            "Privilege Escalation"
+                        ],
+                        "mitre_attack_groups": [
+                            "APT-C-36",
+                            "APT29",
+                            "APT3",
+                            "APT32",
+                            "APT33",
+                            "APT37",
+                            "APT38",
+                            "APT39",
+                            "APT41",
+                            "BITTER",
+                            "BRONZE BUTLER",
+                            "Blue Mockingbird",
+                            "Chimera",
+                            "Cobalt Group",
+                            "Confucius",
+                            "Dragonfly",
+                            "FIN10",
+                            "FIN6",
+                            "FIN7",
+                            "FIN8",
+                            "Fox Kitten",
+                            "GALLIUM",
+                            "Gamaredon Group",
+                            "HEXANE",
+                            "Higaisa",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "LuminousMoth",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Naikon",
+                            "OilRig",
+                            "Patchwork",
+                            "Rancor",
+                            "Silence",
+                            "Stealth Falcon",
+                            "TEMP.Veles",
+                            "Wizard Spider",
+                            "menuPass"
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "external_reference": [
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/taskschd/tasks"
+        ],
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/taskschd/tasks"
+        ],
+        [
+            "https://tools.ietf.org/id/draft-ietf-opsawg-tacacs-07.html#rfc.section.7.2",
+            "https://tools.ietf.org/html/rfc2866"
+        ],
+        [
+            "https://tools.ietf.org/id/draft-ietf-opsawg-tacacs-07.html#rfc.section.7.2",
+            "https://tools.ietf.org/html/rfc2866"
+        ],
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/fileio/file-management",
+            "https://docs.microsoft.com/en-us/windows/win32/fileio/file-streams",
+            "https://docs.microsoft.com/en-us/troubleshoot/windows-client/backup-and-storage/fat-hpfs-and-ntfs-file-systems"
+        ],
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/fileio/file-management",
+            "https://docs.microsoft.com/en-us/windows/win32/fileio/file-streams",
+            "https://docs.microsoft.com/en-us/troubleshoot/windows-client/backup-and-storage/fat-hpfs-and-ntfs-file-systems"
+        ],
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads"
+        ],
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads"
+        ],
+        [
+            "https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads"
+        ]
+    ],
+    "controls": [],
+    "x_mitre_network_requirements": false,
+    "technique_id": "T1053.005",
+    "stix": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9"
+}

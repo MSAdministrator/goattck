@@ -1,0 +1,137 @@
+{
+    "id": "tool--3433a9e8-1c47-4320-b9bf-ed449061d1c3",
+    "name": "Empire",
+    "created": "2019-03-11T14:13:40.648Z",
+    "modified": "2023-03-22T03:43:09.336Z",
+    "x_mitre_version": "1.6",
+    "type": "tool",
+    "description": "[Empire](https://attack.mitre.org/software/S0363) is an open source, cross-platform remote administration and post-exploitation framework that is publicly available on GitHub. While the tool itself is primarily written in Python, the post-exploitation agents are written in pure [PowerShell](https://attack.mitre.org/techniques/T1059/001) for Windows and Python for Linux/macOS. [Empire](https://attack.mitre.org/software/S0363) was one of five tools singled out by a joint report on public hacking tools being widely used by adversaries.(Citation: NCSC Joint Report Public Tools)(Citation: Github PowerShell Empire)(Citation: GitHub ATTACK Empire)",
+    "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+    "labels": [
+        "tool"
+    ],
+    "x_mitre_platforms": [
+        "Linux",
+        "macOS",
+        "Windows"
+    ],
+    "x_mitre_aliases": [
+        "Empire",
+        "EmPyre",
+        "PowerShell Empire"
+    ],
+    "x_mitre_contributors": [],
+    "external_references": [
+        {
+            "source_name": "mitre-attack",
+            "url": "https://attack.mitre.org/software/S0363",
+            "external_id": "S0363",
+            "description": ""
+        },
+        {
+            "source_name": "EmPyre",
+            "url": "",
+            "external_id": "",
+            "description": "(Citation: Github PowerShell Empire)"
+        },
+        {
+            "source_name": "PowerShell Empire",
+            "url": "",
+            "external_id": "",
+            "description": "(Citation: Github PowerShell Empire)"
+        },
+        {
+            "source_name": "Github PowerShell Empire",
+            "url": "https://github.com/PowerShellEmpire/Empire",
+            "external_id": "",
+            "description": "Schroeder, W., Warner, J., Nelson, M. (n.d.). Github PowerShellEmpire. Retrieved April 28, 2016."
+        },
+        {
+            "source_name": "GitHub ATTACK Empire",
+            "url": "https://github.com/dstepanic/attck_empire",
+            "external_id": "",
+            "description": "Stepanic, D. (2018, September 2). attck_empire: Generate ATT&CK Navigator layer file from PowerShell Empire agent logs. Retrieved March 11, 2019."
+        },
+        {
+            "source_name": "NCSC Joint Report Public Tools",
+            "url": "https://www.ncsc.gov.uk/report/joint-report-on-publicly-available-hacking-tools",
+            "external_id": "",
+            "description": "The Australian Cyber Security Centre (ACSC), the Canadian Centre for Cyber Security (CCCS), the New Zealand National Cyber Security Centre (NZ NCSC), CERT New Zealand, the UK National Cyber Security Centre (UK NCSC) and the US National Cybersecurity and Communications Integration Center (NCCIC). (2018, October 11). Joint report on publicly available hacking tools. Retrieved March 11, 2019."
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+    ],
+    "revoked": false,
+    "x_mitre_deprecated": false,
+    "c2_data": {},
+    "external_dataset": [],
+    "additional_names": [],
+    "attribution_links": [],
+    "additional_comments": [],
+    "names": [],
+    "comments": [],
+    "family": [],
+    "links": [],
+    "license": "BSD3",
+    "price": "NA",
+    "github": "https://github.com/BC-SECURITY/Empire",
+    "site": "",
+    "twitter": "@BCSecurity1",
+    "evaluator": "@jorgeorchilles",
+    "date": "1/30/2020",
+    "version": "3.0.5",
+    "implementation": "install.sh",
+    "how_to": "",
+    "slingshot": "Yes",
+    "kali": "Yes",
+    "server": "Python",
+    "implant": "PowerShell",
+    "multi_user": false,
+    "ui": "GUI",
+    "dark_mode": false,
+    "api": "Yes",
+    "windows": "Yes",
+    "linux": "Yes",
+    "macos": "Yes",
+    "tcp": "No",
+    "http": "Yes",
+    "http2": "No",
+    "http3": "No",
+    "dns": "No",
+    "doh": "No",
+    "icmp": "No",
+    "ftp": "No",
+    "imap": "No",
+    "mapi": "No",
+    "smb": "No",
+    "ldap": "",
+    "key_exchange": false,
+    "stego": "No",
+    "proxy_aware": false,
+    "domainfront": "Yes",
+    "custom_profile": false,
+    "jitter": "Yes",
+    "working_hours": false,
+    "kill_date": false,
+    "chaining": "No",
+    "logging": "Yes",
+    "in_wild": false,
+    "attck_mapping": false,
+    "dashboard": "No",
+    "blog": "Yes",
+    "c2_matrix_indicators": "",
+    "jarm": "0ad0ad0000ad0ad22c42d42d000000088658245da669bb571fc2a62dd80912",
+    "actively_maint": false,
+    "slack": "#psempire bloodhoundhq.slack.com",
+    "slack_members": false,
+    "gh_issues": false,
+    "notes": "Dropbox, OneDrive",
+    "socks_support": false,
+    "x_mitre_old_attack_id": "",
+    "x_mitre_attack_spec_version": "3.1.0",
+    "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+    "x_mitre_domains": [
+        "enterprise-attack"
+    ]
+}
