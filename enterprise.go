@@ -34,19 +34,19 @@ type enterprise interface {
 
 // Enterprise struct represents the MITRE ATT&CK Enterprise framework
 type Enterprise struct {
-	Actors                []*models.ActorObject
-	Campaigns             []*models.CampaignObject
-	Controls              []*models.ControlObject
-	DataComponents        []*models.DataComponentObject
-	DataSources           []*models.DataSourceObject
-	Defintions            []*models.MarkingDefinitionObject
-	Malwares              []*models.MalwareObject
-	Matrices              []*models.MatrixObject
-	Mitigations           []*models.MitigationObject
-	Relationships         []*models.RelationshipObject
-	Tactics               []*models.TacticObject
-	Techniques            []*models.TechniqueObject
-	Tools                 []*models.ToolObject
+	Actors                []models.Actor
+	Campaigns             []models.Campaign
+	Controls              []models.Control
+	DataComponents        []models.DataComponent
+	DataSources           []models.DataSource
+	Defintions            []models.MarkingDefinition
+	Malwares              []models.Malware
+	Matrices              []models.Matrix
+	Mitigations           []models.Mitigation
+	Relationships         []models.Relationship
+	Tactics               []models.Tactic
+	Techniques            []models.Technique
+	Tools                 []models.Tool
 	rawData               RawEnterpriseAttck
 	attackRelationshipMap map[string][]string
 	url                   string
@@ -225,9 +225,9 @@ func (e Enterprise) setRelationships() {
 func (e Enterprise) setActorRelationships() {
 	for _, actor := range e.Actors {
 		if e.attackRelationshipMap[actor.Id] != nil {
-			var malwares []*models.MalwareObject
-			var tools []*models.ToolObject
-			var techniques []*models.TechniqueObject
+			var malwares []models.Malware
+			var techniques []models.Technique
+			var tools []models.Tool
 			for _, relationshipId := range e.attackRelationshipMap[actor.Id] {
 				for _, malware := range e.Malwares {
 					if malware.Id == relationshipId {
@@ -255,9 +255,9 @@ func (e Enterprise) setActorRelationships() {
 func (e Enterprise) setCampaignRelationships() {
 	for _, campaign := range e.Campaigns {
 		if e.attackRelationshipMap[campaign.Id] != nil {
-			var malwares []*models.MalwareObject
-			var tools []*models.ToolObject
-			var techniques []*models.TechniqueObject
+			var malwares []models.Malware
+			var tools []models.Tool
+			var techniques []models.Technique
 			for _, relationshipId := range e.attackRelationshipMap[campaign.Id] {
 				for _, malware := range e.Malwares {
 					if malware.Id == relationshipId {
@@ -285,7 +285,7 @@ func (e Enterprise) setCampaignRelationships() {
 func (e Enterprise) setDataComponentRelationships() {
 	for _, dataComponent := range e.DataComponents {
 		if e.attackRelationshipMap[dataComponent.Id] != nil {
-			var techniques []*models.TechniqueObject
+			var techniques []models.Technique
 			for _, relationshipId := range e.attackRelationshipMap[dataComponent.Id] {
 				for _, technique := range e.Techniques {
 					if technique.Id == relationshipId {
@@ -301,8 +301,8 @@ func (e Enterprise) setDataComponentRelationships() {
 func (e Enterprise) setDataSourceRelationships() {
 	for _, dataSource := range e.DataSources {
 		if e.attackRelationshipMap[dataSource.Id] != nil {
-			var dataComponents []*models.DataComponentObject
-			var techniques []*models.TechniqueObject
+			var dataComponents []models.DataComponent
+			var techniques []models.Technique
 			for _, relationshipId := range e.attackRelationshipMap[dataSource.Id] {
 				for _, dataComponent := range e.DataComponents {
 					if dataComponent.Id == relationshipId {
@@ -324,9 +324,9 @@ func (e Enterprise) setDataSourceRelationships() {
 func (e Enterprise) setMalwareRelationships() {
 	for _, malware := range e.Malwares {
 		if e.attackRelationshipMap[malware.Id] != nil {
-			var actors []*models.ActorObject
-			var campaigns []*models.CampaignObject
-			var techniques []*models.TechniqueObject
+			var actors []models.Actor
+			var campaigns []models.Campaign
+			var techniques []models.Technique
 			for _, relationshipId := range e.attackRelationshipMap[malware.Id] {
 				for _, actor := range e.Actors {
 					if actor.Id == relationshipId {
@@ -353,7 +353,7 @@ func (e Enterprise) setMalwareRelationships() {
 
 func (e Enterprise) setMitigationRelationships() {
 	for _, mitigation := range e.Mitigations {
-		var techniques []*models.TechniqueObject
+		var techniques []models.Technique
 		if e.attackRelationshipMap[mitigation.Id] != nil {
 			for _, relationshipId := range e.attackRelationshipMap[mitigation.Id] {
 				for _, technique := range e.Techniques {
@@ -380,7 +380,7 @@ func (e Enterprise) setMitigationRelationships() {
 
 func (e Enterprise) setTacticRelationships() {
 	for _, tactic := range e.Tactics {
-		var techniques []*models.TechniqueObject
+		var techniques []models.Technique
 		for _, technique := range e.Techniques {
 			if technique.KillChainPhases != nil {
 				for _, phase := range technique.KillChainPhases {
@@ -397,15 +397,15 @@ func (e Enterprise) setTacticRelationships() {
 func (e Enterprise) setTechniqueRelationships() {
 	for _, technique := range e.Techniques {
 		if e.attackRelationshipMap[technique.Id] != nil {
-			var actors []*models.ActorObject
-			var campaigns []*models.CampaignObject
-			var dataComponents []*models.DataComponentObject
-			var dataSources []*models.DataSourceObject
-			var malwares []*models.MalwareObject
-			var mitigations []*models.MitigationObject
-			var tactics []*models.TacticObject
-			var techniques []*models.TechniqueObject
-			var tools []*models.ToolObject
+			var actors []models.Actor
+			var campaigns []models.Campaign
+			var dataComponents []models.DataComponent
+			var dataSources []models.DataSource
+			var malwares []models.Malware
+			var mitigations []models.Mitigation
+			var tactics []models.Tactic
+			var techniques []models.Technique
+			var tools []models.Tool
 			for _, relationshipId := range e.attackRelationshipMap[technique.Id] {
 				for _, actor := range e.Actors {
 					if actor.Id == relationshipId {
@@ -471,9 +471,9 @@ func (e Enterprise) setTechniqueRelationships() {
 func (e Enterprise) setToolRelationships() {
 	for _, tool := range e.Tools {
 		if e.attackRelationshipMap[tool.Id] != nil {
-			var actors []*models.ActorObject
-			var campaigns []*models.CampaignObject
-			var techniques []*models.TechniqueObject
+			var actors []models.Actor
+			var campaigns []models.Campaign
+			var techniques []models.Technique
 			for _, relationshipId := range e.attackRelationshipMap[tool.Id] {
 				for _, actor := range e.Actors {
 					if actor.Id == relationshipId {
